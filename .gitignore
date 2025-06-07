@@ -1,0 +1,12 @@
+# mdBook generated output
+/book/
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# IDE/Editor specific files
+.vscode/
+.idea/
+*.swp
+*~
