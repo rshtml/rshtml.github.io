@@ -4,9 +4,22 @@
 # Operating System files
 .DS_Store
 Thumbs.db
+Desktop.ini
+._*
 
 # IDE/Editor specific files
 .vscode/
 .idea/
+*.project
+*.tmproj
+*.sublime-workspace
+*.sublime-project
+nbproject/
+*.sln
+*.suo
+*.user
+*.userprefs
+*.bak
+*.orig
 *.swp
 *~
