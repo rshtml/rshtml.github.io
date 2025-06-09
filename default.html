@@ -194,6 +194,77 @@
             font-size: 1em;
         }
 
+        .toc-toggle {
+            display: none;
+            background: var(--orange-end);
+            color: white;
+            font-weight: 600;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            margin: 20px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .toc-toggle {
+                display: block;
+                position: fixed;
+                top: 0px;
+                left: 10px;
+                z-index: 1100;
+                background: var(--orange-end);
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 6px;
+                font-size: 1em;
+                cursor: pointer;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+                opacity: 0.7;
+            }
+
+            .toc-container {
+                position: fixed;
+                top: 0;
+                left: 0;
+                background: white;
+                width: 80%;
+                max-width: 320px;
+                height: 100vh;
+                z-index: 1050;
+                padding: 60px 20px 40px 20px;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+                overflow-y: auto;
+            }
+
+            .toc-container.open {
+                transform: translateX(0);
+            }
+
+            .container {
+                margin: 20px auto 40px; /* kenarda negatif marjin kaldırıldı */
+                padding: 0 20px;
+                max-width: 100%;
+                display: block; /* flex'ten çıkarıldı */
+            }
+
+            .content {
+                padding: 20px 20px 40px 20px;
+                border-left: none;
+                width: 100%;
+            }
+
+            /* İçerik kaymasını önlemek için body overflow kontrolü */
+            body.toc-open {
+                overflow: hidden;
+            }
+        }
+
+
     </style>
 </head>
 <body>
@@ -210,14 +281,15 @@
     <br/>
     <span class="version">Current Version: v0.1.0</span>
 </header>
+<button class="toc-toggle" aria-label="Toggle Table of Contents">
+    &#9776;
+</button>
 <div class="container">
     <aside class="toc-container">
         <div class="toc-title">Documentation</div>
         <nav class="toc"></nav>
     </aside>
-    <main class="content">
-        {{ content }}
-    </main>
+    {{ content }}
 </div>
 
 
@@ -295,6 +367,41 @@
         activeLinkClass: 'is-active-link',
         listClass: 'toc-list',
         linkClass: 'toc-link',
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toggleBtn = document.querySelector(".toc-toggle");
+        const toc = document.querySelector(".toc-container");
+        const body = document.body;
+
+        toggleBtn.addEventListener("click", function () {
+            toc.classList.toggle("open");
+            body.classList.toggle("toc-open");
+        });
+
+        // Menü açıkken içerik tıklanırsa menüyü kapat
+        document.addEventListener("click", function (event) {
+            if (!toc.contains(event.target) && !toggleBtn.contains(event.target) && toc.classList.contains("open")) {
+                toc.classList.remove("open");
+                body.classList.remove("toc-open");
+            }
+        });
+
+        // Menüdeki herhangi bir linke tıklanınca menüyü kapat
+        toc.querySelectorAll("a").forEach(link => {
+            link.addEventListener("click", () => {
+                toc.classList.remove("open");
+                body.classList.remove("toc-open");
+            });
+        });
+    });
+
+    document.querySelectorAll('.content h3').forEach((el) => {
+        if (!el.id) {
+            el.id = el.textContent.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+        }
     });
 </script>
 

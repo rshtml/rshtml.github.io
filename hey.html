@@ -11,8 +11,9 @@
           rel="stylesheet">
 
     <!-- EKLEDİM: PRISM.JS RENKLENDİRME TEMASI VE KOPYALA BUTONU STİLİ -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.css"
+          rel="stylesheet"/>
 
     <style>
         :root {
@@ -26,32 +27,243 @@
             --code-bg: #f1f3f5;
             --menu-link-color: #5a6169;
         }
+
         /* ... Önceki CSS kodlarınızın tamamı buraya gelecek ... */
         /* Kısaltmak için eklemedim, mevcut CSS'iniz harika çalışıyor. */
 
         /* Sadece birkaç ekleme ve düzenleme yapıyoruz */
-        body { font-family: 'Inter', sans-serif; margin: 0; line-height: 1.7; background-color: var(--bg-color); color: var(--text-color); -webkit-font-smoothing: antialiased; }
-        .hero { background: linear-gradient(135deg, var(--orange-start), var(--orange-end)); color: var(--text-light); text-align: center; padding: 80px 20px 100px; position: relative; }
-        .hero h1 { font-size: 4em; margin: 0; font-weight: 700; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); }
-        .hero .version { background: rgba(255, 255, 255, 0.2); padding: 5px 15px; border-radius: 20px; font-weight: 600; display: inline-block; margin-top: 10px; font-size: 0.9em; }
-        .hero .description { font-size: 1.3em; max-width: 600px; margin: 20px auto 30px; font-weight: 400; }
-        .hero-buttons a { color: var(--text-light); text-decoration: none; padding: 12px 25px; border: 2px solid var(--text-light); border-radius: 5px; margin: 0 10px; font-weight: 600; transition: all 0.3s ease; }
-        .hero-buttons a:hover { background-color: var(--text-light); color: var(--orange-end); }
-        .container { display: flex; max-width: 1400px; margin: -40px auto 40px; padding: 0 20px; position: relative; background: var(--bg-color); border-radius: 8px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); }
-        .toc-container { width: 280px; flex-shrink: 0; position: sticky; top: 40px; height: calc(100vh - 80px); overflow-y: auto; padding: 40px 20px 40px 0; }
-        .toc-title { font-size: 1.1em; font-weight: 700; color: var(--text-color); padding-bottom: 10px; margin-bottom: 10px; }
-        .toc-list { padding-left: 0; list-style: none; }
-        .toc-list .toc-list { padding-left: 20px; }
-        .toc-link { text-decoration: none; color: var(--menu-link-color); font-weight: 400; display: block; padding: 6px 10px; border-left: 3px solid transparent; transition: all 0.2s ease; }
-        .is-active-link { color: var(--link-color); font-weight: 600; background-color: #fdf5f5; border-left-color: var(--link-color); }
-        .toc-link:hover { color: var(--link-color); background-color: #fdf5f5; }
-        .content { flex-grow: 1; padding: 40px 0 40px 40px; border-left: 1px solid var(--border-color); }
-        .content h2 { font-size: 2em; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-top: 60px; font-weight: 700; }
-        .content h2:first-of-type { margin-top: 0; }
-        .content h3 { font-size: 1.5em; margin-top: 40px; }
-        .content code { font-family: 'Source Code Pro', monospace; background-color: var(--code-bg); padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; }
-        .content pre[class*="language-"] { padding: 20px; border-radius: 8px; overflow-x: auto; margin: 1.5em 0; position: relative; /* Kopyala butonu için gerekli */ }
-        .content pre[class*="language-"] code { background-color: transparent; padding: 0; font-size: 1em; }
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            line-height: 1.7;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--orange-start), var(--orange-end));
+            color: var(--text-light);
+            text-align: center;
+            padding: 80px 20px 100px;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 4em;
+            margin: 0;
+            font-weight: 700;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero .version {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+
+        .hero .description {
+            font-size: 1.3em;
+            max-width: 600px;
+            margin: 20px auto 30px;
+            font-weight: 400;
+        }
+
+        .hero-buttons a {
+            color: var(--text-light);
+            text-decoration: none;
+            padding: 12px 25px;
+            border: 2px solid var(--text-light);
+            border-radius: 5px;
+            margin: 0 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .hero-buttons a:hover {
+            background-color: var(--text-light);
+            color: var(--orange-end);
+        }
+
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: -40px auto 40px;
+            padding: 0 20px;
+            position: relative;
+            background: var(--bg-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .toc-container {
+            width: 280px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 40px;
+            height: calc(100vh - 80px);
+            overflow-y: auto;
+            padding: 40px 20px 40px 0;
+        }
+
+        .toc-title {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: var(--text-color);
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        .toc-list {
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .toc-list .toc-list {
+            padding-left: 20px;
+        }
+
+        .toc-link {
+            text-decoration: none;
+            color: var(--menu-link-color);
+            font-weight: 400;
+            display: block;
+            padding: 6px 10px;
+            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .is-active-link {
+            color: var(--link-color);
+            font-weight: 600;
+            background-color: #fdf5f5;
+            border-left-color: var(--link-color);
+        }
+
+        .toc-link:hover {
+            color: var(--link-color);
+            background-color: #fdf5f5;
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 40px 0 40px 40px;
+            border-left: 1px solid var(--border-color);
+        }
+
+        .content h2 {
+            font-size: 2em;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 60px;
+            font-weight: 700;
+        }
+
+        .content h2:first-of-type {
+            margin-top: 0;
+        }
+
+        .content h3 {
+            font-size: 1.5em;
+            margin-top: 40px;
+        }
+
+        .content code {
+            font-family: 'Source Code Pro', monospace;
+            background-color: var(--code-bg);
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+
+        .content pre[class*="language-"] {
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5em 0;
+            position: relative; /* Kopyala butonu için gerekli */
+        }
+
+        .content pre[class*="language-"] code {
+            background-color: transparent;
+            padding: 0;
+            font-size: 1em;
+        }
+
+        .toc-toggle {
+            display: none;
+            background: var(--orange-end);
+            color: white;
+            font-weight: 600;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            margin: 20px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .toc-toggle {
+                display: block;
+                position: fixed;
+                top: 0px;
+                left: 10px;
+                z-index: 1100;
+                background: var(--orange-end);
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 6px;
+                font-size: 1em;
+                cursor: pointer;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+                opacity: 0.7;
+            }
+
+            .toc-container {
+                position: fixed;
+                top: 0;
+                left: 0;
+                background: white;
+                width: 80%;
+                max-width: 320px;
+                height: 100vh;
+                z-index: 1050;
+                padding: 60px 20px 40px 20px;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+                overflow-y: auto;
+            }
+
+            .toc-container.open {
+                transform: translateX(0);
+            }
+
+            .container {
+                margin: 20px auto 40px; /* kenarda negatif marjin kaldırıldı */
+                padding: 0 20px;
+                max-width: 100%;
+                display: block; /* flex'ten çıkarıldı */
+            }
+
+            .content {
+                padding: 20px 20px 40px 20px;
+                border-left: none;
+                width: 100%;
+            }
+
+            /* İçerik kaymasını önlemek için body overflow kontrolü */
+            body.toc-open {
+                overflow: hidden;
+            }
+        }
+
 
     </style>
 </head>
@@ -69,6 +281,9 @@
     <br/>
     <span class="version">Current Version: v0.1.0</span>
 </header>
+<button class="toc-toggle" aria-label="Toggle Table of Contents">
+    &#9776;
+</button>
 <div class="container">
     <aside class="toc-container">
         <div class="toc-title">Documentation</div>
@@ -94,11 +309,11 @@
         <!-- ... Installation & Setup bölümü ... -->
         <div>
             <h2 id="installation-setup">📦 Installation & Setup</h2>
-            <h3>1. Add to <code>Cargo.toml</code></h3>
+            <h3 id="installation-setup-1">1. Add to <code>Cargo.toml</code></h3>
             <pre><code class="language-toml">[dependencies]
 rshtml = "0.1.0" # Use the latest version
 </code></pre>
-            <h3>2. Define a Struct</h3>
+            <h3 id="installation-setup-2">2. Define a Struct</h3>
             <!-- DÜZELTTİM: `<` -> `<` ve `>` -> `>` -->
             <pre><code class="language-rust">use rshtml::RsHtml;
 
@@ -108,7 +323,7 @@ struct HomePage {
     items: Vec<String>,
 }
 </code></pre>
-            <h3>3. Render!</h3>
+            <h3 id="installation-setup-3">3. Render!</h3>
             <pre><code class="language-rust">fn main() {
     let page = HomePage {
         username: "Mehmet".to_string(),
@@ -291,6 +506,41 @@ struct HomePage {
         activeLinkClass: 'is-active-link',
         listClass: 'toc-list',
         linkClass: 'toc-link',
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toggleBtn = document.querySelector(".toc-toggle");
+        const toc = document.querySelector(".toc-container");
+        const body = document.body;
+
+        toggleBtn.addEventListener("click", function () {
+            toc.classList.toggle("open");
+            body.classList.toggle("toc-open");
+        });
+
+        // Menü açıkken içerik tıklanırsa menüyü kapat
+        document.addEventListener("click", function (event) {
+            if (!toc.contains(event.target) && !toggleBtn.contains(event.target) && toc.classList.contains("open")) {
+                toc.classList.remove("open");
+                body.classList.remove("toc-open");
+            }
+        });
+
+        // Menüdeki herhangi bir linke tıklanınca menüyü kapat
+        toc.querySelectorAll("a").forEach(link => {
+            link.addEventListener("click", () => {
+                toc.classList.remove("open");
+                body.classList.remove("toc-open");
+            });
+        });
+    });
+
+    document.querySelectorAll('.content h3').forEach((el) => {
+        if (!el.id) {
+            el.id = el.textContent.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+        }
     });
 </script>
 
