@@ -87,7 +87,7 @@ This method returns a `Result<String, std::fmt::Error>` containing the final HTM
 Inside your `.rs.html` template, you have full access to the 
 fields and methods of your struct instance through the `self` keyword.
 ```razor
-    <p>Welcome, @self.title!</p>
+    <p>Welcome, @self.title</p>
     <span>Your formatted name is: @self.get_formatted_name()</span>
 ```
 
@@ -107,67 +107,211 @@ fn main() {
 ## ✨ Core Syntax Reference
 
 ### Expressions
+`@expression / @(expression)`
+
+RsHtml allows seamless integration of Rust logic through expressions, 
+which are evaluated at render time. All expressions begin with the `@` prefix.
+
+***Rust's Ownership Rules Still Apply***
+
+A core principle of RsHtml is that it doesn't hide Rust's power—or its rules. 
+The template content is translated into a Rust function at compile time. 
+Consequently, all expressions you write must adhere to Rust's strict 
+`ownership and borrowing model`.
+
+**Simple Expressions**
+
+Simple variable access, function calls, 
+or field lookups can be written directly following the `@` prefix.
 
 ```razor
 <h1>Welcome, @self.username</h1>
 <p>You have @self.items.len() items.</p>
 ```
 
-### Control Flow
+**Parenthesized Expressions**
 
-#### Conditions: `@if / @else`
+For more complex expressions that might be ambiguous, 
+you should enclose them in parentheses: `@(...)`. 
+This ensures the entire expression is parsed and evaluated as a single unit.
+
+```razor
+<p>Final price: @(item.cost + item.tax)</p>
+<p>@((self.value * 10).pow(2))</p>
+```
+
+### Control Flows & Loops
+
+> ℹ️: Inside these blocks, the closing brace `}` character has a special meaning,
+as it marks the end of the block. If you need to render a literal closing brace `}`
+as text within a block, you must escape it by doubling it, like so: `@@}`.
+
+#### Conditions: `@if / else / else if`
+
+The syntax for RsHtml control flows, 
+is defined as `@<directive> <rust-expression> { <inner-template> } ..`
 
 ```razor
 @if self.items.is_empty() {
     <p>You have no items.</p>
 } else {
-    <p>Here are your items</p>
+    <p>Here are your items.</p>
 }
 ```
 
-#### Loops: `@for`
+```razor
+@if self.count == 0 {
+    <p>You have no items.</p>
+} else if self.count == 1 {
+    <p>You have one item.</p>
+} else {
+    <p>Here are your items.</p>
+}
+```
+
+#### Loops: `@for / @while`
+
+RsHtml allows you to use Rust's native `@for` and `@while` loops to generate 
+repetitive template content.
+
+The syntax mirrors standard Rust. You can write your loop expression, 
+followed by a block { ... } containing the template to be rendered for each iteration. 
+Inside the block, you can freely mix HTML with other Rust expressions, 
+which must be prefixed with `@`.
 
 ```razor
 <ul>
     @for item in &self.items {
         <li>@item</li>
     }
+    
+    <table>
+        @for (index, user) in self.users.iter().enumerate() {
+            <tr>
+                <td>@(index + 1)</td>
+                <td>@user.name</td>
+            </tr>
+        }
+    </table>
 </ul>
+```
+
+With `continue` and `break` directives:
+
+```razor
+@for i in 0..10 {
+    @if i == 3 { 
+        @continue
+    }
+    
+    @if i == 8 {
+        @break
+    }
+    
+    <p>it is @i</p>
+}
+```
+
+```razor
+@while self.count < 10 {
+    <p> Counter is: @self.count </p>
+    @self.increment()
+}
 ```
 
 #### Pattern Matching: `@match`
 
+The arms of an @match expression in RsHtml are highly flexible.
+
+- **Single-Line Content:** For simple cases, you can provide a single-line expression, 
+which can be a Rust value or a line of HTML.
+- **Block Content:** For more complex output, you can provide a template block `{ ... }`. 
+This block acts as an `"inner template"` and can contain any valid RsHtml content, 
+including HTML tags and other directives.
+
 ```razor
-@match self.items.len() {
-    0 => <p>Zero items.</p>,
-    1 => <p>One item!</p>,
-    n @ 2..=5 => <p>A few items (@n).</p>,
-    _ => <p>Many items.</p>
+@match self.value {
+    0 => {<p>this is zero: @self.value</p>},
+    1 => <p>this is one</p>,
+    2 => self.value,
+    3 | 4 => (i * 3),
+    _ => <p>this is bigger than four</p>,
 }
 ```
 
-### Advanced Syntax
+### Comments
+`@* ... *@`
 
-#### Rust Code Blocks: `@{...}`
+```razor
+@* this is server side comment, it will not appear in the html output *@
+```
+
+### Rust Code Blocks
+`@{...}`
+
+You can embed larger chunks of Rust logic using `@{ ... }` blocks. 
+This allows you to declare variables and perform complex operations.
+
+RsHtml also provides special directives to render content directly from within these code blocks:
+
+- **`@:` for Single Lines:** Use the `@:` prefix to output a single line of text.
+You can embed expressions like `@expr` on the same line.
+- **`<text>...</text>` for Multi-Line:** Use the `<text>` tags to output a multi-line block of 
+text or HTML, which can also include embedded expressions.
 
 ```razor
 @{
-    let message = format!("This is a message generated at {}.", chrono::Local::now());
+    @: this is rust code blocks text line @self.data and data
+    
+    let s = "hello";
+    
+     <text>
+        this is rust code blocks text block @self.data and data and @s
+     </text>
+     
+     fn inline_function() -> String {
+        "inline function".to_string()
+     }
+     
+     for i in 0..10 {
+        println!("Item {}", i);
+        @: @i
+     }
+     
+     let message = "I Love RsHtml!";
 }
+
 <p>@message</p>
 ```
 
-#### Raw Output: `@raw { ... }`
+### Raw Output
+`@raw { ... }`
+
+There may be times when you need to output a block of content exactly as it is, 
+without any processing by the RsHtml engine. For this purpose, you can use a `@raw { ... }` block.
+
+Everything inside a `@raw` block is rendered directly to the output as raw, 
+unprocessed text. All RsHtml syntax, including expressions, control flow directives, 
+and comments, will be ignored and treated as literal text.
 
 ```razor
 @raw {
-    <script>
-        // This @if is ignored by RsHtml
-        if (true) {
-          console.log("Hello from a raw block!");
-        }
-    </script>
+    <p>this is raw block @self.value</p>
+    @self.my_func()
+    
+    <h2>{{ message }}</h2>
+    <p>Count value: {{ count }}</p>
 }
+```
+
+**Output:**
+
+```text
+<p>this is raw block @self.value</p>
+@self.my_func()
+
+<h2>{{ message }}</h2>
+<p>Count value: {{ count }}</p>
 ```
 
 ## 🏛️ Layouts & Components

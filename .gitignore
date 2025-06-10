@@ -6,10 +6,15 @@
 Thumbs.db
 Desktop.ini
 ._*
+_site
+Gemfile
+Gemfile.lock
+hey.html
 
 # IDE/Editor specific files
 .vscode/
 .idea/
+.jekyll-cache
 *.project
 *.tmproj
 *.sublime-workspace

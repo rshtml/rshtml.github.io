@@ -258,6 +258,23 @@
             }
         }
 
+        blockquote {
+            background-color: #f0f6ff; /* Açık mavi arkaplan */
+            border-left: 5px solid #5b92e5; /* Sol tarafta kalın mavi çizgi */
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-size: 0.95em; /* Yazıyı biraz daha küçük ve şık yapabilir */
+        }
+
+        /* Blockquote içindeki paragrafların gereksiz boşluklarını kaldır */
+        blockquote p:first-of-type {
+            margin-top: 0;
+        }
+        blockquote p:last-of-type {
+            margin-bottom: 0;
+        }
+
     </style>
 </head>
 <body>
