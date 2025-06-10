@@ -258,22 +258,53 @@
             }
         }
 
+        /* start */
         blockquote {
-            background-color: #f0f6ff; /* Açık mavi arkaplan */
-            border-left: 5px solid #5b92e5; /* Sol tarafta kalın mavi çizgi */
+            background-color: #f0f6ff;
+            border-left: 5px solid #5b92e5;
             padding: 15px 20px;
             margin: 20px 0;
             border-radius: 5px;
-            font-size: 0.95em; /* Yazıyı biraz daha küçük ve şık yapabilir */
+            font-size: 0.95em;
         }
 
-        /* Blockquote içindeki paragrafların gereksiz boşluklarını kaldır */
         blockquote p:first-of-type {
             margin-top: 0;
         }
+
         blockquote p:last-of-type {
             margin-bottom: 0;
         }
+
+        /* end */
+
+        /* start */
+        .content table {
+            display: inline-block;
+            max-width: 100%;
+            overflow-x: auto;
+
+            margin: 1.5em 0;
+            border-collapse: collapse;
+            border: 1px solid #dfe2e5;
+        }
+
+        .content th,
+        .content td {
+            padding: 8px 12px;
+            border: 1px solid #dfe2e5;
+        }
+
+        .content th {
+            background-color: #f6f8fa;
+            font-weight: 600;
+        }
+
+        .content tr:nth-child(2n) {
+            background-color: #f6f8fa;
+        }
+
+        /* end */
 
     </style>
 </head>

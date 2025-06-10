@@ -104,6 +104,26 @@ fn main() {
 }
 ```
 
+### 4. Tracking Template Changes
+> 💡 **Optional, Highly Recommended**
+
+To ensure that `cargo` automatically recompiles your project when a template file is modified, 
+you can create a `build.rs` file in the root of your project. 
+This improves the development experience by making sure your 
+changes are always reflected without needing a full `cargo clean`.
+
+<u><strong>build.rs:</strong></u>
+
+```rust
+use rshtml_core::track_views_folder;
+
+fn main() {
+    // This function tells cargo to re-run the build script if
+    // any file inside the configured views directory changes.
+    track_views_folder();
+}
+```
+
 ## ✨ Core Syntax Reference
 
 ### Expressions
@@ -142,7 +162,7 @@ This ensures the entire expression is parsed and evaluated as a single unit.
 
 ### Control Flows & Loops
 
-> ℹ️: Inside these blocks, the closing brace `}` character has a special meaning,
+> ℹ️ Inside these blocks, the closing brace `}` character has a special meaning,
 as it marks the end of the block. If you need to render a literal closing brace `}`
 as text within a block, you must escape it by doubling it, like so: `@@}`.
 
@@ -314,22 +334,190 @@ and comments, will be ignored and treated as literal text.
 <p>Count value: {{ count }}</p>
 ```
 
-## 🏛️ Layouts & Components
+### Escapes
+`@@ / @@{ / @@}`
 
-### Layout System
+Certain characters are part of the template syntax. 
+To render these characters literally, you sometimes need to "escape" them. 
+The escape rules are context-aware, meaning they depend on where the character is used.
+
+**The @ Character**
+
+The `@` symbol always has a special meaning. To output a literal `@` character anywhere 
+in your template, you must escape it as `@@`.
 
 ```razor
-@* In layout.rs.html *@
-<!DOCTYPE html>
-<body>
-    <header>My App</header>
-    <main>@render_body</main>
-</body>
-
-@* In page.rs.html *@
-@extends("layout.rs.html")
-<p>This is the page content!</p>
+<p>Follow us on: @@rshtml_engine</p>
 ```
+*Renders as: `<p>Follow us on: @rshtml_engine</p>`*
+
+**The { and } Characters (Braces)**
+
+The curly braces `{}` are only special **inside** RsHtml blocks (like @if { ... }, @for { ... }, etc.).
+
+Inside a block (inner template) to render literal `{` or `}` characters, 
+you must escape them as `@@{` and `@@}` respectively.
+
+```razor
+<style>body @@{ background: #eee; @@}</style>
+```
+*Renders as: `<style>body { font-size: 16px; }</style>`*
+
+**Summary Table:**
+
+| Character | Location        | Escape Sequence    |
+|:----------|:----------------|:-------------------|
+| `@`       | Anywhere        | `@@`               |
+| `{`       | Inside a block  | `@@{`              |
+| `}`       | Inside a block  | `@@}`              |
+| `{` / `}` | Outside a block | (No escape needed) |
+
+
+## 🧩️ Include Template
+
+`@include("path/to/your/template.rs.html")`
+
+The `@include` directive is one of the simplest yet most powerful tools for keeping your 
+templates organized. Think of it as a server-side `"copy-paste"` that inserts the content 
+of one template file directly into another.
+
+*header.rs.html:*
+```razor
+<p>this is include part for content</p>
+<div> @self.my_func() </div>
+```
+
+*home.rs.html:*
+```razor
+<div>
+    <p>this is home page, @self.value</p>
+
+    @include("header.rs.html")
+</div>
+```
+
+Result after `include`,
+*home.rs.html:*
+```razor
+<div>
+    <p>this is home page, @self.value</p>
+
+    <p>this is include part for content</p>
+    <div> @self.my_func() </div>
+</div>
+```
+
+
+## 🏛️ Layouts
+
+### Extends
+`@extends / @extends('path')`
+
+The `@extends` directive is used to specify a layout for a template.
+- **Placement:** If used, `@extends` must be the very first statement at the top of the file.
+- **Specific Layout:** Use `@extends("path/to/layout.rs.html")` to inherit from a specific layout file.
+- **Default Layout:** Use a standalone `@extends` to inherit from the project's pre-configured default layout.
+- **No Layout:** If the `@extends` directive is omitted, the template will be **rendered without any layout**.
+
+```razor
+@extends("layout.rs.html")
+```
+
+### Section Directive
+`@section('name','value')`
+
+The inline `@section directive` allows you to define a section with a simple, 
+single-line value.
+It takes two arguments: the section name (as a string) and the content, 
+which can be either a string literal or a Rust expression.
+
+```razor
+@section("section_name", "A string value")
+@section("section_name", @self.rust_variable)
+```
+
+### Section Block
+`@section name { ... }`
+
+A `@section block` is the primary way to define a larger, 
+multi-line chunk of content that will be injected into a layout. You define a block 
+by specifying the section's name, followed by the content enclosed in curly braces `{}`.
+
+```razor
+@section menu {
+    <p>this is section menu content @self.data</p>
+}
+```
+
+### Default Content
+
+Any content in a template that is **not** placed inside a named 
+`@section block` and `@section directive` is considered **default content**. 
+This content is automatically captured and can be rendered within a layout.
+
+```razor
+@extends("layout.rs.html")
+
+@* This is the default content because it's not in a @section block. *@
+<h1>A Simple Page</h1>
+<p>No need to wrap this in a section block.</p>
+```
+
+### Render & Render Body
+`@render('section_name') / @render_body`
+
+A layout file acts as a template skeleton. To make it useful, 
+you need to tell it where to place the content from the pages that extend it. 
+This is done using two primary directives: `@render and @render_body`.
+
+***@render("section_name")***
+
+This directive is used to render a named section defined using `@section`. 
+It takes the name of the section as a string and injects its content at that location. 
+This is perfect for placing specific, named content blocks like 
+a page title, a sidebar, or custom scripts.
+
+**@render_body**
+
+This special directive is used to render the **default content** from an extending 
+template—that is, any content not wrapped in a named `@section` block. 
+It doesn't take any arguments and simply marks the spot where the main body 
+of the page should be placed.
+
+```razor
+@render_body
+@render_body() @* Parentheses are also allowed *@
+```
+
+***render and render_body:***
+
+```razor
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>@render("title") - My Website</title>
+</head>
+<body>
+    <div class="container">
+        <main>
+            @render_body
+        </main>
+        <aside>
+            @render("sidebar")
+        </aside>
+    </div>
+</body>
+</html>
+```
+
+In this layout:
+-   The `<title>` will be filled by a section named `"title"`.
+-   The `<main>` tag will be filled with the default, primary content of the page.
+-   The `<aside>` tag will be filled by a section named `"sidebar"`.
+
+## 🧱 Components
+
 
 ### Component System
 
