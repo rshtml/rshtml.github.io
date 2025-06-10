@@ -25,7 +25,7 @@ With this configuration, the resulting paths for a struct like `HomePage` would 
 - **View File:** <project-root>/views/home.rs.html
 - **Layout File:** <project-root>/views/layout.rs.html
 
-<u>**Cargo.toml:**</u>
+<u markdown="1">**Cargo.toml:**</u>
 ```toml
 [dependencies]
 rshtml = "0.1.0"
@@ -61,7 +61,7 @@ You can override the default inference by providing an explicit path with the
 With `#[rshtml(path="index.rs.html")]`, `RsHtml` will look for the `index.rs.html` file, 
 ignoring the struct's name for path resolution.
 
-<u>**Struct Definition:**</u>
+<u markdown="1">**Struct Definition:**</u>
 ```rust
 use rshtml::RsHtml;
 
@@ -86,7 +86,7 @@ fields and methods of your struct instance through the `self` keyword.
     <span>Your formatted name is: @self.get_formatted_name()</span>
 ```
 
-<u>**Template Rendering:**</u>
+<u markdown="1">**Template Rendering:**</u>
 ```rust
 fn main() {
     let page = HomePage {
