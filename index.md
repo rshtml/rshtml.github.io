@@ -678,5 +678,5 @@ to open issues or submit pull requests.
 ## 📜 License
 
 RsHtml is licensed under your choice of the
-[MIT License](https://github.com/rshtml/rshtml/blob/main/LICENSE-MIT) or the
-[Apache License](https://github.com/rshtml/rshtml/blob/main/LICENSE-APACHE).
+`MIT License` or the
+`Apache License`.
