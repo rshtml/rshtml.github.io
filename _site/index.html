@@ -284,7 +284,210 @@
         <nav class="toc"></nav>
     </aside>
     <main class="content">
-        {{ content }}
+        <h2 id="-introduction">🚀 Introduction</h2>
+
+<p>RsHtml is a powerful template engine that transforms 
+your HTML templates into highly efficient Rust code at <strong>compile time</strong>. 
+It allows you to seamlessly embed Rust logic and expressions directly 
+into your templates, harnessing the full power of Rust for 
+dynamic content generation.</p>
+
+<p>It is designed to help you build well-structured and maintainable web applications. 
+By providing powerful tools for creating reusable components and 
+organizing page layouts, RsHtml makes it easier to manage the complexity 
+of your user interface as it grows.</p>
+
+<h2 id="-installation--setup">📦 Installation &amp; Setup</h2>
+
+<h3 id="1-add-to-cargotoml">1. Add to <code class="language-plaintext highlighter-rouge">Cargo.toml</code></h3>
+
+<p>You can customize the view settings in your <code class="language-plaintext highlighter-rouge">Cargo.toml</code> file under the <code class="language-plaintext highlighter-rouge">[package.metadata.rshtml]</code> section.</p>
+
+<p>By default, view files are expected to be located in a views folder at the project’s root. The path to the layout file is also relative to this views directory. The default configuration is as follows:</p>
+<div class="language-toml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">[package.metadata.rshtml]</span>
+<span class="py">views</span> <span class="o">=</span> <span class="p">{</span> <span class="py">path</span> <span class="p">=</span> <span class="s">"views"</span><span class="p">,</span> <span class="py">layout</span> <span class="p">=</span> <span class="s">"layout.rs.html"</span> <span class="p">}</span>
+</code></pre></div></div>
+<p>With this configuration, the resulting paths for a struct like <code class="language-plaintext highlighter-rouge">HomePage</code> would be:</p>
+<ul>
+  <li><strong>View File:</strong> &lt;project-root&gt;/views/home.rs.html</li>
+  <li><strong>Layout File:</strong> &lt;project-root&gt;/views/layout.rs.html</li>
+</ul>
+
+<p><u><strong>Cargo.toml:</strong></u></p>
+<div class="language-toml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">[dependencies]</span>
+<span class="py">rshtml</span> <span class="p">=</span> <span class="s">"0.1.0"</span>
+
+<span class="c"># The default folder and layout can be changed. This is the default setup:</span>
+<span class="c">#[package.metadata.rshtml]</span>
+<span class="c">#views = { path = "views", layout = "layout.rs.html" }</span>
+</code></pre></div></div>
+
+<h3 id="2-define-a-struct">2. Define a Struct</h3>
+
+<p>The <code class="language-plaintext highlighter-rouge">RsHtml derive macro</code> automatically handles the implementation of the <code class="language-plaintext highlighter-rouge">RsHtml trait</code> for your structs. 
+It provides two ways to determine the template file path: by inference or by an explicit path.</p>
+
+<p><strong>Path Inference (Default Behavior)</strong></p>
+
+<p>By default, if no parameters are specified, the macro infers the template path from 
+the struct’s name using the following convention:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. It removes the Page suffix from the struct name.
+2. It converts the remaining part of the name to lowercase.
+3. It appends the .rs.html extension.
+</code></pre></div></div>
+
+<p><strong>Example:</strong>
+For a struct named <code class="language-plaintext highlighter-rouge">HomePage</code>, the inferred path will be <code class="language-plaintext highlighter-rouge">home.rs.html</code>.</p>
+
+<p><strong>Explicit Path (Overriding Inference)</strong></p>
+
+<p>You can override the default inference by providing an explicit path with the 
+<code class="language-plaintext highlighter-rouge">#[rshtml(path = "...")]</code> attribute. This forces <code class="language-plaintext highlighter-rouge">RsHtml</code> to use the specified file.</p>
+
+<p><strong>Example:</strong>
+With <code class="language-plaintext highlighter-rouge">#[rshtml(path="index.rs.html")]</code>, <code class="language-plaintext highlighter-rouge">RsHtml</code> will look for the <code class="language-plaintext highlighter-rouge">index.rs.html</code> file, 
+ignoring the struct’s name for path resolution.</p>
+
+<p><u><strong>Struct Definition:</strong></u></p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">use</span> <span class="nn">rshtml</span><span class="p">::</span><span class="n">RsHtml</span><span class="p">;</span>
+
+<span class="nd">#[derive(RsHtml)]</span>
+<span class="k">struct</span> <span class="n">HomePage</span> <span class="p">{</span>
+    <span class="n">username</span><span class="p">:</span> <span class="nb">String</span><span class="p">,</span>
+    <span class="n">items</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="nb">String</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="3-render-the-template">3. Render The Template</h3>
+<p>Once your struct is defined, you can render its corresponding template by creating 
+an instance of the struct and then calling the <code class="language-plaintext highlighter-rouge">.render()</code> method. 
+This method returns a <code class="language-plaintext highlighter-rouge">Result&lt;String, std::fmt::Error&gt;</code> containing the final HTML output.</p>
+
+<p><strong>Accessing Data and Logic in the View</strong></p>
+
+<p>Inside your <code class="language-plaintext highlighter-rouge">.rs.html</code> template, you have full access to the 
+fields and methods of your struct instance through the <code class="language-plaintext highlighter-rouge">self</code> keyword.</p>
+<pre><code class="language-razor">    &lt;p&gt;Welcome, @self.title!&lt;/p&gt;
+    &lt;span&gt;Your formatted name is: @self.get_formatted_name()&lt;/span&gt;
+</code></pre>
+
+<p><u><strong>Template Rendering:</strong></u></p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="n">page</span> <span class="o">=</span> <span class="n">HomePage</span> <span class="p">{</span>
+        <span class="n">title</span><span class="p">:</span> <span class="s">"RsHtml"</span><span class="nf">.to_string</span><span class="p">(),</span>
+        <span class="n">items</span><span class="p">:</span> <span class="nd">vec!</span><span class="p">[</span><span class="s">"Item 1"</span><span class="nf">.to_string</span><span class="p">(),</span> <span class="s">"Item 2"</span><span class="nf">.to_string</span><span class="p">()],</span>
+    <span class="p">};</span>
+
+    <span class="k">let</span> <span class="n">html_output</span> <span class="o">=</span> <span class="n">page</span><span class="nf">.render</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">();</span>
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"{}"</span><span class="p">,</span> <span class="n">html_output</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="-core-syntax-reference">✨ Core Syntax Reference</h2>
+
+<h3 id="expressions">Expressions</h3>
+
+<pre><code class="language-razor">&lt;h1&gt;Welcome, @self.username&lt;/h1&gt;
+&lt;p&gt;You have @self.items.len() items.&lt;/p&gt;
+</code></pre>
+
+<h3 id="control-flow">Control Flow</h3>
+
+<h4 id="conditions-if--else">Conditions: <code class="language-plaintext highlighter-rouge">@if / @else</code></h4>
+
+<pre><code class="language-razor">@if self.items.is_empty() {
+    &lt;p&gt;You have no items.&lt;/p&gt;
+} else {
+    &lt;p&gt;Here are your items&lt;/p&gt;
+}
+</code></pre>
+
+<h4 id="loops-for">Loops: <code class="language-plaintext highlighter-rouge">@for</code></h4>
+
+<pre><code class="language-razor">&lt;ul&gt;
+    @for item in &amp;self.items {
+        &lt;li&gt;@item&lt;/li&gt;
+    }
+&lt;/ul&gt;
+</code></pre>
+
+<h4 id="pattern-matching-match">Pattern Matching: <code class="language-plaintext highlighter-rouge">@match</code></h4>
+
+<pre><code class="language-razor">@match self.items.len() {
+    0 =&gt; &lt;p&gt;Zero items.&lt;/p&gt;,
+    1 =&gt; &lt;p&gt;One item!&lt;/p&gt;,
+    n @ 2..=5 =&gt; &lt;p&gt;A few items (@n).&lt;/p&gt;,
+    _ =&gt; &lt;p&gt;Many items.&lt;/p&gt;
+}
+</code></pre>
+
+<h3 id="advanced-syntax">Advanced Syntax</h3>
+
+<h4 id="rust-code-blocks-">Rust Code Blocks: <code class="language-plaintext highlighter-rouge">@{...}</code></h4>
+
+<pre><code class="language-razor">@{
+    let message = format!("This is a message generated at {}.", chrono::Local::now());
+}
+&lt;p&gt;@message&lt;/p&gt;
+</code></pre>
+
+<h4 id="raw-output-raw---">Raw Output: <code class="language-plaintext highlighter-rouge">@raw { ... }</code></h4>
+
+<pre><code class="language-razor">@raw {
+    &lt;script&gt;
+        // This @if is ignored by RsHtml
+        if (true) {
+          console.log("Hello from a raw block!");
+        }
+    &lt;/script&gt;
+}
+</code></pre>
+
+<h2 id="️-layouts--components">🏛️ Layouts &amp; Components</h2>
+
+<h3 id="layout-system">Layout System</h3>
+
+<pre><code class="language-razor">@* In layout.rs.html *@
+&lt;!DOCTYPE html&gt;
+&lt;body&gt;
+    &lt;header&gt;My App&lt;/header&gt;
+    &lt;main&gt;@render_body&lt;/main&gt;
+&lt;/body&gt;
+
+@* In page.rs.html *@
+@extends("layout.rs.html")
+&lt;p&gt;This is the page content!&lt;/p&gt;
+</code></pre>
+
+<h3 id="component-system">Component System</h3>
+
+<pre><code class="language-razor">@* In components/card.rs.html *@
+&lt;div class="card"&gt;
+    &lt;h3&gt;@self.title&lt;/h3&gt;
+    &lt;div&gt;@child_content&lt;/div&gt;
+&lt;/div&gt;
+
+@* In page.rs.html *@
+@use "components/card.rs.html" as Card
+
+&lt;Card title="My First Card"&gt;
+    &lt;p&gt;This is the content passed to the card.&lt;/p&gt;
+&lt;/Card&gt;
+</code></pre>
+
+<h2 id="-contributing">🤝 Contributing</h2>
+
+<p>Contributions are welcome! Please visit our 
+<a href="https://github.com/rshtml/rshtml">GitHub repository</a> 
+to open issues or submit pull requests.</p>
+
+<h2 id="-license">📜 License</h2>
+
+<p>RsHtml is licensed under your choice of the 
+<a href="https://github.com/rshtml/rshtml/blob/main/LICENSE-MIT">MIT License</a> or the 
+<a href="https://github.com/rshtml/rshtml/blob/main/LICENSE-APACHE">Apache License</a>.</p>
+
     </main>
 </div>
 

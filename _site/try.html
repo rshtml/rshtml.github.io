@@ -1,0 +1,138 @@
+<main class="content">
+  <!-- ... Introduction ... -->
+  <div>
+    <h2 id="introduction">🚀 Introduction</h2>
+    <p>
+      RsHtml is a powerful template engine that transforms your HTML templates into highly
+      efficient Rust code at <strong>compile time</strong>. It allows you to
+      seamlessly embed Rust logic and expressions directly into your templates, harnessing the full
+      power of Rust for dynamic content generation.
+    </p>
+    <p>
+      It is designed to help you build well-structured and maintainable web applications.
+      By providing powerful tools for creating reusable components and organizing page layouts,
+      RsHtml makes it easier to manage the complexity of your user interface as it grows.
+    </p>
+  </div>
+
+  <!-- ... Installation & Setup ... -->
+  <div>
+    <h2 id="installation-setup">📦 Installation & Setup</h2>
+    <h3 id="installation-setup-1">1. Add to <code>Cargo.toml</code></h3>
+    <pre><code class="language-toml">[dependencies]
+rshtml = "0.1.0" # Use the latest version
+</code></pre>
+    <h3 id="installation-setup-2">2. Define a Struct</h3>
+    <pre><code class="language-rust">use rshtml::RsHtml;
+
+#[derive(RsHtml)]
+struct HomePage {
+    username: String,
+    items: Vec<String>,
+}
+    </pre></code>
+    <h3 id="installation-setup-3">3. Render!</h3>
+    <pre><code class="language-rust">fn main() {
+    let page = HomePage {
+        username: "Mehmet".to_string(),
+        items: vec!["Item 1".to_string(), "Item 2".to_string()],
+    };
+
+    let html_output = page.render().unwrap();
+    println!("{}", html_output);
+}
+</code></pre>
+  </div>
+
+  <h2 id="core-syntax">✨ Core Syntax Reference</h2>
+
+  <h3>Expressions (<code>@</code>)</h3>
+  <pre><code class="language-razor"><h1>Welcome, @self.username!</h1>
+<p>You have @self.items.len() items.</p>
+</code></pre>
+
+  <h3>Control Flow</h3>
+  <h4>Conditional Rendering: <code>@if / @else</code></h4>
+  <pre><code class="language-rshtml">@if self.items.is_empty() {
+    <p>You have no items.</p>
+} else {
+    <p>Here are your items:</p>
+}
+</code></pre>
+
+  <h4>Loops: <code>@for</code></h4>
+  <pre><code class="language-rshtml"><ul>
+    @for item in &self.items {
+        <li>@item</li>
+    }
+</ul>
+</code></pre>
+
+  <h4>Pattern Matching: <code>@match</code></h4>
+  <!-- Bu blokta HTML olmadığı için `language-rust` kalabilir, ama `rshtml` de zarar vermez -->
+  <pre><code class="language-rshtml">@match self.items.len() {
+    0 => <p>Zero items.</p>,
+    1 => <p>One item!</p>,
+    n @ 2..=5 => <p>A few items (@n).</p>,
+    _ => <p>Many items.</p>
+}
+</code></pre>
+
+  <!-- Diğer tüm kod bloklarını language-rshtml olarak güncelledim -->
+  <h3>Advanced Syntax</h3>
+  <h4>Rust Code Blocks: <code>@{...}</code></h4>
+  <pre><code class="language-rshtml">@{
+    let message = format!("This is a message generated at {}.", chrono::Local::now());
+}
+<p>@message</p>
+</code></pre>
+  <h4>Raw Output: <code>@raw { ... }</code></h4>
+  <pre><code class="language-rshtml">@raw {
+    <script>
+        // This @if is ignored by RsHtml
+        if (true) {
+          console.log("Hello from a raw block!");
+        }
+    </script>
+}
+</code></pre>
+
+  <h2 id="layouts-components">🏛️ Layouts & Components</h2>
+  <h3>Layout System</h3>
+  <pre><code class="language-rshtml">@* In layout.rs.html *@
+<!DOCTYPE html>
+<body>
+    <header>My App</header>
+    <main>@render_body</main>
+</body>
+
+@* In page.rs.html *@
+@extends("layout.rs.html")
+<p>This is the page content!</p>
+</code></pre>
+
+  <h3>Component System</h3>
+  <pre><code class="language-rshtml">@* In components/card.rs.html *@
+<div class="card">
+    <h3>@self.title</h3>
+    <div>@child_content</div>
+</div>
+
+@* In page.rs.html *@
+@use "components/card.rs.html" as Card
+
+<Card title="My First Card">
+    <p>This is the content passed to the card.</p>
+</Card>
+</code></pre>
+
+  <!-- ... Contributing ve License bölümleri ... -->
+  <h2 id="contributing">🤝 Contributing</h2>
+  <p>Contributions are welcome! Please visit our <a href="https://github.com/rshtml/rshtml">GitHub repository</a>
+    to open issues or submit pull requests.</p>
+  <h2 id="license">📜 License</h2>
+  <p>RsHtml is licensed under your choice of the <a href="https://github.com/rshtml/rshtml/blob/main/LICENSE-MIT"
+                                                    target="_blank">MIT
+    License</a> or the <a href="https://github.com/rshtml/rshtml/blob/main/LICENSE-APACHE" target="_blank">Apache
+    License</a>.</p>
+</main>

@@ -50,7 +50,7 @@ It provides two ways to determine the template file path: by inference or by an 
 By default, if no parameters are specified, the macro infers the template path from 
 the struct's name using the following convention:
 
-    1. It removes the Page suffix from the struct name (if it exists).
+    1. It removes the Page suffix from the struct name.
     2. It converts the remaining part of the name to lowercase.
     3. It appends the .rs.html extension.
 
@@ -106,22 +106,22 @@ fn main() {
 
 ## ✨ Core Syntax Reference
 
-### Expressions (`@`)
+### Expressions
 
 ```razor
-<h1>Welcome, @self.username!</h1>
+<h1>Welcome, @self.username</h1>
 <p>You have @self.items.len() items.</p>
 ```
 
 ### Control Flow
 
-#### Conditional Rendering: `@if / @else`
+#### Conditions: `@if / @else`
 
 ```razor
 @if self.items.is_empty() {
     <p>You have no items.</p>
 } else {
-    <p>Here are your items:</p>
+    <p>Here are your items</p>
 }
 ```
 
