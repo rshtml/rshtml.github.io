@@ -4,11 +4,16 @@ layout: default
 
 ## 🚀 Introduction
 
-RsHtml is a powerful template engine that transforms your HTML templates into highly efficient Rust code at **compile time**. It allows you to seamlessly embed Rust logic and expressions directly into your templates, harnessing the full power of Rust for dynamic content generation.
+RsHtml is a powerful template engine that transforms 
+your HTML templates into highly efficient Rust code at **compile time**. 
+It allows you to seamlessly embed Rust logic and expressions directly 
+into your templates, harnessing the full power of Rust for 
+dynamic content generation.
 
-It is designed to help you build well-structured and maintainable web applications. By providing powerful tools for creating reusable components and organizing page layouts, RsHtml makes it easier to manage the complexity of your user interface as it grows.
-
----
+It is designed to help you build well-structured and maintainable web applications. 
+By providing powerful tools for creating reusable components and 
+organizing page layouts, RsHtml makes it easier to manage the complexity 
+of your user interface as it grows.
 
 ## 📦 Installation & Setup
 
@@ -99,8 +104,6 @@ fn main() {
 }
 ```
 
----
-
 ## ✨ Core Syntax Reference
 
 ### Expressions (`@`)
@@ -167,8 +170,6 @@ fn main() {
 }
 ```
 
----
-
 ## 🏛️ Layouts & Components
 
 ### Layout System
@@ -203,14 +204,14 @@ fn main() {
 </Card>
 ```
 
----
-
 ## 🤝 Contributing
 
-Contributions are welcome! Please visit our [GitHub repository](https://github.com/rshtml/rshtml) to open issues or submit pull requests.
-
----
+Contributions are welcome! Please visit our 
+[GitHub repository](https://github.com/rshtml/rshtml) 
+to open issues or submit pull requests.
 
 ## 📜 License
 
-RsHtml is licensed under your choice of the [MIT License](https://github.com/rshtml/rshtml/blob/main/LICENSE-MIT) or the [Apache License](https://github.com/rshtml/rshtml/blob/main/LICENSE-APACHE).
+RsHtml is licensed under your choice of the 
+[MIT License](https://github.com/rshtml/rshtml/blob/main/LICENSE-MIT) or the 
+[Apache License](https://github.com/rshtml/rshtml/blob/main/LICENSE-APACHE).
