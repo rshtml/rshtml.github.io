@@ -27,8 +27,8 @@ By default, view files are expected to be located in a views folder at the proje
 views = { path = "views", layout = "layout.rs.html" }
 ```
 With this configuration, the resulting paths for a struct like `HomePage` would be:
-- **View File:** <project-root>/views/home.rs.html
-- **Layout File:** <project-root>/views/layout.rs.html
+- **View File:** &lt;project-root&gt;/views/home.rs.html
+- **Layout File:** &lt;project-root&gt;/views/layout.rs.html
 
 <u><strong>Cargo.toml:</strong></u>
 ```toml
