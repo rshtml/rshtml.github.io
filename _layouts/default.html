@@ -306,11 +306,39 @@
 
         /* end */
 
+        /* start: footer */
+        .site-footer {
+            text-align: center;
+            padding: 25px;
+            margin-top: 50px;
+            border-top: 1px solid var(--border-color);
+            color: var(--menu-link-color);
+            font-size: 0.9em;
+        }
+
+        .site-footer a {
+            color: var(--link-color);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .site-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* end: footer */
+
     </style>
 </head>
 <body>
 
 <header class="hero">
+
+    <!--    <h1 style="display: flex; align-items: center; justify-content: center;">-->
+    <!--        <img src="{{ '/logo.png' | relative_url }}" width="120" alt="RsHtml Logo">-->
+    <!--        <span>RsHtml</span>-->
+    <!--    </h1>-->
+
     <h1>RsHtml</h1>
     <p class="description">A compile-time, type-safe, lightweight and flexible template engine for Rust, designed to
         seamlessly integrate Rust code within HTML templates.</p>
@@ -335,6 +363,14 @@
         {{ content }}
     </main>
 </div>
+
+
+<footer class="site-footer">
+    <p>
+        © 2025, Developed by <a href="https://github.com/mehmetkesik" target="_blank" rel="noopener noreferrer">mehmetkesik</a>.
+        Released under the MIT & Apache-2.0 licenses.
+    </p>
+</footer>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
