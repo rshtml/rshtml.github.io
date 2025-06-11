@@ -348,9 +348,36 @@ and comments, will be ignored and treated as literal text.
 <p>Count value: {{ count }}</p>
 ```
 
-### Escapes
+### Rendering & Escaping
+`@#` ~ `@@ / @@{ / @@}`
 
-`@@ / @@{ / @@}`
+#### Raw Rendering (The @# Prefix)
+
+By default, RsHtml prioritizes security. Any output from a Rust expression 
+`(@self.my_var)` is automatically HTML-escaped. 
+This means characters like `<` and `>` are converted to `&lt;` and `&gt;`, which prevents 
+Cross-Site Scripting (XSS) attacks by ensuring that string variables cannot inject malicious HTML.
+
+However, there are times when you need to render raw HTML that you've generated in your 
+Rust code and trust completely. To bypass the default escaping mechanism, 
+you can prefix your expression with `@#`.
+
+```razor
+@* --- Default, Safe Rendering --- *@
+@* The HTML tags will be visible as plain text. *@
+<div>@self.my_var</div>
+
+@* --- Raw, Unescaped Rendering --- *@
+@* The string is rendered as actual HTML. *@
+<div>@#self.my_var</div>
+```
+*Renders as:*
+```html
+<div>&lt;p&gt;This is &lt;strong&gt;bold&lt;&#x2F;strong&gt; text.&lt;&#x2F;p&gt;</div>
+<div><p>This is <strong>bold</strong> text.</p></div>
+```
+
+#### Escaping Template Syntax Characters
 
 Certain characters are part of the template syntax.
 To render these characters literally, you sometimes need to "escape" them.
@@ -602,6 +629,15 @@ an `HTML-like tag syntax` and a `function-like directive syntax`.
 
 **Tag Syntax:** &lt;ComponentName ... /&gt; or &lt;ComponentName&gt; &lt;child_content&gt; &lt;/ComponentName&gt;
 
+**Important Naming Convention:** When using the tag syntax, 
+the component name must begin with a capital letter `(PascalCase)`. 
+This is the critical rule that allows RsHtml to distinguish a custom component 
+like `<UserProfile>` from a standard HTML tag like `<p>`.
+
+> - ✅ **Correct:** `<Alert message="..."/>`
+> - ❌ **Incorrect:** `<alert ... />` (This would be treated as a literal HTML tag)
+
+
 - **Self-Closing:** If a component doesn't need any child content, you can use a
   self-closing tag: `<MyComponent/>`.
 - **With Child Content:** To pass content to be rendered by `@child_content`,
@@ -668,6 +704,77 @@ but also complex Rust data and even other rendered chunks of HTML as parameters.
     }
 />
 ```
+
+## 🛠️ Helper Functions
+RsHtml includes a set of built-in helper functions that are automatically available 
+in all your templates. These utilities are designed to simplify common tasks like 
+JSON serialization and date/time formatting.
+
+### json()
+`json<T: Serialize>(value: &T) -> String`
+
+Serializes a given Rust value into a JSON string, ready for use in JavaScript.
+
+```razor      
+<script>
+    const userData = @#json(&self.current_user);
+    console.log("User ID:", userData.id);
+</script>
+```
+
+*Renders as:*
+```html
+<script>
+    const userData = {"id":1,"username":"Ferris"};
+    console.log("User ID:", userData.id);
+</script>
+```
+
+### json_let()
+`json_let<T: Serialize>(name: &str, value: &T) -> String`
+
+Converts a given Rust value into JSON and wraps it directly in a JavaScript `let` variable declaration.
+
+```razor
+<script>
+    @#json_let("user", &self.current_user);
+    console.log("Username:", user.username);
+</script>
+```
+
+*Renders as:*
+```html
+<script>
+  let user = {"id":1,"username":"Ferris"};
+  console.log("Username:", user.username);
+</script>
+```
+
+### time()
+`time(value: &impl Display) -> RsDateTime`
+
+Takes a date/time value and converts it into a special 
+RsDateTime object that can be easily formatted with chainable methods.
+
+By default, it formats the date and time in a `YYYY-MM-DD HH:MM:SS` format.
+
+```razor
+<p>Published on: @time(&self.post_created_at)</p>
+```
+
+**The .pretty() Formatter:**
+
+For a more human-readable date format, you can chain the .pretty() method.
+```razor
+<p>Published on: @time(&self.post_created_at).pretty()</p>
+```
+*Renders a date like: Jan 01, 2025*
+
+**Formatting can be done with the `format` method:**
+```razor
+<p>Published on: @time(&self.post_created_at).format("%A, %B %e, %Y")</p>
+```
+*Renders something like: Wednesday, January 1, 2025*
 
 ## 🤝 Contributing
 
