@@ -77,6 +77,7 @@
             margin: 0 10px;
             font-weight: 600;
             transition: all 0.3s ease;
+            display: inline-block;
         }
 
         .hero-buttons a:hover {
@@ -269,6 +270,22 @@
         @media (max-width: 768px) {
             body.toc-open {
                 overflow: hidden;
+            }
+
+            .hero h1 {
+                font-size: 2.5em;
+            }
+
+            .hero .description {
+                font-size: 1.1em;
+                margin: 15px auto 25px;
+            }
+
+            .hero-buttons a {
+                padding: 8px 16px;
+                font-size: 0.9em;
+                margin: 5px;
+                display: inline-block;
             }
 
             .toc-toggle {
