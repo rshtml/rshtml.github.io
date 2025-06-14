@@ -125,7 +125,7 @@ changes are always reflected without needing a full `cargo clean`.
 <u><strong>build.rs:</strong></u>
 
 ```rust
-use rshtml_core::track_views_folder;
+use rshtml::track_views_folder;
 
 fn main() {
     // This function tells cargo to re-run the build script if
