@@ -134,6 +134,23 @@ fn main() {
 }
 ```
 
+### 5. Editor Support
+
+RsHtml offers a rich editing experience powered by modern tooling. Our goal is to provide seamless integration with your favorite editors.
+
+Core support is built upon:
+
+-   **[tree-sitter-rshtml](https://github.com/rshtml/tree-sitter-rshtml){:target="_blank" rel="noopener noreferrer"}:** Provides robust and efficient parsing for accurate syntax highlighting and code analysis.
+-   **[Language Server Protocol (LSP)](https://github.com/rshtml/rshtml-analyzer){:target="_blank" rel="noopener noreferrer"}:** Provides core features like autocompletion, syntax highlighting, and error checking.
+
+**Visual Studio Code**
+
+[VS Code RsHtml Extension](https://marketplace.visualstudio.com/items?itemName=rshtml.rshtml){:target="_blank" rel="noopener noreferrer"}
+
+The official `RsHtml for VS Code` extension is the best way to get started. It bundles the `tree-sitter` grammar and the `LSP` for a full-featured experience out of the box.
+
+Support for other editors is planned for the future.
+
 ## ✨ Core Syntax Reference
 
 ### Expressions
@@ -215,7 +232,7 @@ which must be prefixed with `@`.
     @for item in &self.items {
         <li>@item</li>
     }
-    
+
     <table>
         @for (index, user) in self.users.iter().enumerate() {
             <tr>
@@ -231,14 +248,14 @@ With `continue` and `break` directives:
 
 ```razor
 @for i in 0..10 {
-    @if i == 3 { 
+    @if i == 3 {
         @continue
     }
-    
+
     @if i == 8 {
         @break
     }
-    
+
     <p>it is @i</p>
 }
 ```
@@ -295,22 +312,22 @@ RsHtml also provides special directives to render content directly from within t
 ```razor
 @{
     @: this is rust code blocks text line @self.data and data
-    
+
     let s = "hello";
-    
+
      <text>
         this is rust code blocks text block @self.data and data and @s
      </text>
-     
+
      fn inline_function() -> String {
         "inline function".to_string()
      }
-     
+
      for i in 0..10 {
         println!("Item {}", i);
         @: @i
      }
-     
+
      let message = "I Love RsHtml!";
 }
 
@@ -332,7 +349,7 @@ and comments, will be ignored and treated as literal text.
 @raw {
     <p>this is raw block @self.value</p>
     @self.my_func()
-    
+
     <h2>{{ message }}</h2>
     <p>Count value: {{ count }}</p>
 }
@@ -353,13 +370,13 @@ and comments, will be ignored and treated as literal text.
 
 #### Raw Rendering (The @# Prefix)
 
-By default, RsHtml prioritizes security. Any output from a Rust expression 
-`(@self.my_var)` is automatically HTML-escaped. 
-This means characters like `<` and `>` are converted to `&lt;` and `&gt;`, which prevents 
+By default, RsHtml prioritizes security. Any output from a Rust expression
+`(@self.my_var)` is automatically HTML-escaped.
+This means characters like `<` and `>` are converted to `&lt;` and `&gt;`, which prevents
 Cross-Site Scripting (XSS) attacks by ensuring that string variables cannot inject malicious HTML.
 
-However, there are times when you need to render raw HTML that you've generated in your 
-Rust code and trust completely. To bypass the default escaping mechanism, 
+However, there are times when you need to render raw HTML that you've generated in your
+Rust code and trust completely. To bypass the default escaping mechanism,
 you can prefix your expression with `@#`.
 
 ```razor
@@ -629,9 +646,9 @@ an `HTML-like tag syntax` and a `function-like directive syntax`.
 
 **Tag Syntax:** &lt;ComponentName ... /&gt; or &lt;ComponentName&gt; &lt;child_content&gt; &lt;/ComponentName&gt;
 
-**Important Naming Convention:** When using the tag syntax, 
-the component name must begin with a capital letter `(PascalCase)`. 
-This is the critical rule that allows RsHtml to distinguish a custom component 
+**Important Naming Convention:** When using the tag syntax,
+the component name must begin with a capital letter `(PascalCase)`.
+This is the critical rule that allows RsHtml to distinguish a custom component
 like `<UserProfile>` from a standard HTML tag like `<p>`.
 
 > - ✅ **Correct:** `<Alert message="..."/>`
@@ -678,7 +695,7 @@ This syntax provides a more programmatic feel, similar to calling a function.
 
 ### Passing Data (Parameters & Attributes)
 
-Data can be passed to components using parameters `(for @Component(...) syntax)` or 
+Data can be passed to components using parameters `(for @Component(...) syntax)` or
 attributes `(for <Component .../> syntax)`. RsHtml supports several data types:
 
 -   **String Literals:** `title="Hello World"`
@@ -687,7 +704,7 @@ attributes `(for <Component .../> syntax)`. RsHtml supports several data types:
 -   **Rust Expressions:** `user=@self.current_user` or `items=@(vec![1, 2, 3])`
 -   **Template Blocks:** `header={ <h3>My Header</h3> }`
 
-This powerful feature allows you to pass not just simple values, 
+This powerful feature allows you to pass not just simple values,
 but also complex Rust data and even other rendered chunks of HTML as parameters.
 
 ```razor
@@ -706,8 +723,8 @@ but also complex Rust data and even other rendered chunks of HTML as parameters.
 ```
 
 ## 🛠️ Helper Functions
-RsHtml includes a set of built-in helper functions that are automatically available 
-in all your templates. These utilities are designed to simplify common tasks like 
+RsHtml includes a set of built-in helper functions that are automatically available
+in all your templates. These utilities are designed to simplify common tasks like
 JSON serialization and date/time formatting.
 
 ### json()
@@ -715,7 +732,7 @@ JSON serialization and date/time formatting.
 
 Serializes a given Rust value into a JSON string, ready for use in JavaScript.
 
-```razor      
+```razor
 <script>
     const userData = @#json(&self.current_user);
     console.log("User ID:", userData.id);
@@ -753,7 +770,7 @@ Converts a given Rust value into JSON and wraps it directly in a JavaScript `let
 ### time()
 `time(value: &impl Display) -> RsDateTime`
 
-Takes a date/time value and converts it into a special 
+Takes a date/time value and converts it into a special
 RsDateTime object that can be easily formatted with chainable methods.
 
 By default, it formats the date and time in a `YYYY-MM-DD HH:MM:SS` format.
