@@ -182,6 +182,7 @@ In tree-sitter, you must copy the files in the `tree-sitter-rshtml/queries/` fol
 It should look like this:
 
 `~/.config/helix/runtime/queries/rshtml/highlights.scm`
+
 `~/.config/helix/runtime/queries/rshtml/injections.scm`
 
 It can be checked by the `hx --health rshtml` command.
