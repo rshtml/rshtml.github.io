@@ -186,6 +186,37 @@ It should look like this:
 
 It can be checked by the `hx --health rshtml` command.
 
+> **Neovim**
+
+Make sure to download the executable file suitable for your system from the `rshtml-analyzer` [Releases Page](https://github.com/rshtml/rshtml-analyzer/releases){:target="_blank" rel="noopener noreferrer"}.
+
+Add the following code to the  `lsp/rshtml_analyzer.lua` file:
+```lua
+return {
+  cmd = { 'rshtml-analyzer', '--stdio' },
+  filetypes = { 'rshtml' },
+  root_markers = { 'Cargo.toml', 'Cargo.lock' },
+  single_file_support = true,
+}
+```
+
+To define a file type, add the following code to your `init.lua` file:
+```lua
+vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
+  pattern = '*.rs.html',
+  callback = function()
+    vim.bo.filetype = "rshtml"
+  end,
+})
+```
+
+To enable LSP, add the following code to your `init.lua` file:
+```lua
+vim.lsp.enable('rshtml-analyzer')
+```
+
+***These settings are provided for general guidance. You should adapt the LSP configuration to fit your specific setup.***
+
 Support for other editors is planned for the future.
 
 ## ✨ Core Syntax Reference
