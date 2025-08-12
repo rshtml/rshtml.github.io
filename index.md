@@ -141,13 +141,50 @@ RsHtml offers a rich editing experience powered by modern tooling. Our goal is t
 Core support is built upon:
 
 -   **[tree-sitter-rshtml](https://github.com/rshtml/tree-sitter-rshtml){:target="_blank" rel="noopener noreferrer"}:** Provides robust and efficient parsing for accurate syntax highlighting and code analysis.
--   **[Language Server Protocol (LSP)](https://github.com/rshtml/rshtml-analyzer){:target="_blank" rel="noopener noreferrer"}:** Provides core features like autocompletion, syntax highlighting, and error checking.
+-   **[Language Server Protocol (LSP)](https://github.com/rshtml/rshtml-analyzer){:target="_blank" rel="noopener noreferrer"}:** Provides core features like autocompletion, syntax highlighting and error checking.
 
-**Visual Studio Code**
+---
+<br/>
+
+> **Visual Studio Code**
 
 [VS Code RsHtml Extension](https://marketplace.visualstudio.com/items?itemName=rshtml.rshtml){:target="_blank" rel="noopener noreferrer"}
 
 The official `RsHtml for VS Code` extension is the best way to get started. It bundles the `tree-sitter` grammar and the `LSP` for a full-featured experience out of the box.
+
+> **Helix**
+
+Add the following language setting to your `languages.toml` file:
+
+```toml
+[[language]]
+name = "rshtml"
+file-types = [{ glob = "*.rs.html" }]
+scope = "source.rshtml"
+language-servers = ["rshtml-analyzer"]
+grammar = "rshtml"
+roots = ["Cargo.lock", "Cargo.toml"]
+block-comment-tokens = { start = "@*", end = "*@" }
+
+[language-server.rshtml-analyzer]
+command = "rshtml-analyzer"
+args = ["--stdio"]
+
+[[grammar]]
+name = "rshtml"
+source = { git = "https://github.com/rshtml/tree-sitter-rshtml", rev = "bf2b58f34d67942a62e3710749635d45cadd2187" }
+```
+
+You can download the compiled `rshtml-analyzer` code suitable for your system from the [Releases Page](https://github.com/rshtml/rshtml-analyzer/releases){:target="_blank" rel="noopener noreferrer"}.
+
+In tree-sitter, you must copy the files in the `tree-sitter-rshtml/queries/` folder to the `runtime/queries/rshtml/` location in the `helix config folder`.
+
+It should look like this:
+
+`~/.config/helix/runtime/queries/rshtml/highlights.scm`
+`~/.config/helix/runtime/queries/rshtml/injections.scm`
+
+It can be checked by the `hx --health rshtml` command.
 
 Support for other editors is planned for the future.
 
