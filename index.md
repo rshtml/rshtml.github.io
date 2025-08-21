@@ -370,22 +370,9 @@ The arms of an @match expression in RsHtml are highly flexible.
 You can embed larger chunks of Rust logic using `@{ ... }` blocks.
 This allows you to declare variables and perform complex operations.
 
-RsHtml also provides special directives to render content directly from within these code blocks:
-
-- **`@:` for Single Lines:** Use the `@:` prefix to output a single line of text.
-  You can embed expressions like `@expr` on the same line.
-- **`<text>...</text>` for Multi-Line:** Use the `<text>` tags to output a multi-line block of
-  text or HTML, which can also include embedded expressions.
-
 ```razor
 @{
-    @: this is rust code blocks text line @self.data and data
-
     let s = "hello";
-
-     <text>
-        this is rust code blocks text block @self.data and data and @s
-     </text>
 
      fn inline_function() -> String {
         "inline function".to_string()
@@ -393,7 +380,6 @@ RsHtml also provides special directives to render content directly from within t
 
      for i in 0..10 {
         println!("Item {}", i);
-        @: @i
      }
 
      let message = "I Love RsHtml!";
@@ -434,7 +420,7 @@ and comments, will be ignored and treated as literal text.
 ```
 
 ### Rendering & Escaping
-`@#` ~ `@@ / @@{ / @@}`
+`@#` ~ `@@`
 
 #### Raw Rendering (The @# Prefix)
 
@@ -462,12 +448,6 @@ you can prefix your expression with `@#`.
 <div><p>This is <strong>bold</strong> text.</p></div>
 ```
 
-#### Escaping Template Syntax Characters
-
-Certain characters are part of the template syntax.
-To render these characters literally, you sometimes need to "escape" them.
-The escape rules are context-aware, meaning they depend on where the character is used.
-
 **The @ Character**
 
 The `@` symbol always has a special meaning. To output a literal `@` character anywhere
@@ -478,28 +458,6 @@ in your template, you must escape it as `@@`.
 ```
 
 *Renders as: `<p>Follow us on: @rshtml_engine</p>`*
-
-**The { and } Characters (Braces)**
-
-The curly braces `{}` are only special **inside** RsHtml blocks (like @if { ... }, @for { ... }, etc.).
-
-Inside a block (inner template) to render literal `{` or `}` characters,
-you must escape them as `@@{` and `@@}` respectively.
-
-```razor
-<style>body @@{ background: #eee; @@}</style>
-```
-
-*Renders as: `<style>body { font-size: 16px; }</style>`*
-
-**Summary Table:**
-
-| Character | Location        | Escape Sequence    |
-|:----------|:----------------|:-------------------|
-| `@`       | Anywhere        | `@@`               |
-| `{`       | Inside a block  | `@@{`              |
-| `}`       | Inside a block  | `@@}`              |
-| `{` / `}` | Outside a block | (No escape needed) |
 
 ## 🧩️ Include Template
 
@@ -703,6 +661,10 @@ Before you can use a component, you must import it using the `@use` directive.
 
 @* Import using the default name (will be available as 'Alert') *@
 @use "components/Alert.rs.html"
+
+@* It can also be used without the rs.html extension and the extension is added automatically. *@
+@use "components/Alert"
+@use "components/Alert" as Alert
 ```
 
 ### Using Components
@@ -741,30 +703,9 @@ like `<UserProfile>` from a standard HTML tag like `<p>`.
 </Alert>
 ```
 
-**Function-like Syntax:** @ComponentName(...) { ... }
-
-This syntax provides a more programmatic feel, similar to calling a function.
-
-- Parameters are passed as named arguments inside the parentheses `()`.
-- Child content is placed inside the curly braces `{}`.
-
-```razor
-@use "components/Alert.rs.html"
-
-@* A component call with no child content (the braces are optional) *@
-@Alert(message="This is a warning.")
-
-@* A component call with child content in the braces *@
-@Alert(message="Operation successful!") {
-    <p>Your data was saved correctly.</p>
-    <a href="/home">Go back</a>
-}
-```
-
 ### Passing Data (Parameters & Attributes)
 
-Data can be passed to components using parameters `(for @Component(...) syntax)` or
-attributes `(for <Component .../> syntax)`. RsHtml supports several data types:
+Data can be passed to components using attributes: `<Component attributes />`. RsHtml supports several data types:
 
 -   **String Literals:** `title="Hello World"`
 -   **Numbers:** `count=42` or `price=99.9`
