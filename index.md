@@ -172,7 +172,7 @@ args = ["--stdio"]
 
 [[grammar]]
 name = "rshtml"
-source = { git = "https://github.com/rshtml/tree-sitter-rshtml", rev = "bf2b58f34d67942a62e3710749635d45cadd2187" }
+source = { git = "https://github.com/rshtml/tree-sitter-rshtml", rev = "699be8e06cef5e07678f6c13dd9ce4ca0d4cade7" }
 ```
 
 You can download the compiled `rshtml-analyzer` code suitable for your system from the [Releases Page](https://github.com/rshtml/rshtml-analyzer/releases){:target="_blank" rel="noopener noreferrer"}.
