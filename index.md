@@ -671,11 +671,6 @@ Before you can use a component, you must import it using the `@use` directive.
 
 `<Component title=@self.title is_ok=true />`
 
-RsHtml offers two familiar syntaxes for using components:
-an `HTML-like tag syntax` and a `function-like directive syntax`.
-
-**Tag Syntax:** &lt;ComponentName ... /&gt; or &lt;ComponentName&gt; &lt;child_content&gt; &lt;/ComponentName&gt;
-
 **Important Naming Convention:** When using the tag syntax,
 the component name must begin with a capital letter `(PascalCase)`.
 This is the critical rule that allows RsHtml to distinguish a custom component
