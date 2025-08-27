@@ -38,7 +38,7 @@ With this configuration, the resulting paths for a struct like `HomePage` would 
 
 ```toml
 [dependencies]
-rshtml = "0.1.0"
+rshtml = "0.2.0"
 
 # The default folder and layout can be changed. This is the default setup:
 #[package.metadata.rshtml]
