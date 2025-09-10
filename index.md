@@ -610,6 +610,23 @@ In this layout:
 - The `<main>` tag will be filled with the default, primary content of the page.
 - The `<aside>` tag will be filled by a section named `"sidebar"`.
 
+
+***The `has_section("section_name")` function and `layout` constant***
+
+The `has_section()` function can be used to check if a section exists.
+
+```razor
+@if has_section("section_name") {
+    <p>The section "section_name" exists.</p>
+}
+```
+
+Additionally, the `layout` constant can be used to get the name of the current layout.
+
+```razor
+Layout name: @layout
+```
+
 ## 🧱 Components
 
 Components are reusable, self-contained pieces of UI that encapsulate both markup and logic.
