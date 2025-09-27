@@ -15,34 +15,37 @@ By providing powerful tools for creating reusable components and
 organizing page layouts, RsHtml makes it easier to manage the complexity
 of your user interface as it grows.
 
+In this guide, you will be introduced to `RsHtml`. If you would like to view practical examples, they are available at [`RsHtml Examples`](shttps://github.com/rshtml/examples).
+
 ## 📦 Installation & Setup
 
 ### 1. Add to `Cargo.toml`
 
 You can customize the view settings in your `Cargo.toml` file under the `[package.metadata.rshtml]` section.
 
-By default, view files are expected to be located in a views folder at the project's root. The path to the layout file
-is also relative to this views directory. The default configuration is as follows:
+By default, view files are expected to be located in a `views` folder at the project's root. The path to the `layout` file
+is also relative to this views directory. In `debug mode`, you can configure it to output the generated code to a file, which is then included to provide the implementation. The default configuration is as follows:
 
 ```toml
 [package.metadata.rshtml]
-views = { path = "views", layout = "layout.rs.html" }
+views = { path = "views", layout = "layout.rs.html", extract_file_on_debug = false }
 ```
 
 With this configuration, the resulting paths for a struct like `HomePage` would be:
 
 - **View File:** &lt;project-root&gt;/views/home.rs.html
 - **Layout File:** &lt;project-root&gt;/views/layout.rs.html
+- **Extracted File:** &lt;project-root&gt;/target/rshtml/HomePage.rs
 
 <u><strong>Cargo.toml:</strong></u>
 
 ```toml
 [dependencies]
-rshtml = "0.2.0"
+rshtml = "0.3.0"
 
 # The default folder and layout can be changed. This is the default setup:
 #[package.metadata.rshtml]
-#views = { path = "views", layout = "layout.rs.html" }
+#views = { path = "views", layout = "layout.rs.html", extract_file_on_debug = false }
 ```
 
 ### 2. Define a Struct
@@ -56,7 +59,7 @@ By default, if no parameters are specified, the macro infers the template path f
 the struct's name using the following convention:
 
     1. It removes the Page suffix from the struct name.
-    2. It converts the remaining part of the name to lowercase.
+    2. It converts the remaining part of the name to lowercase using `snake_case` method.
     3. It appends the .rs.html extension.
 
 **Example:**
@@ -74,7 +77,7 @@ ignoring the struct's name for path resolution.
 <u><strong>Struct Definition:</strong></u>
 
 ```rust
-use rshtml::RsHtml;
+use rshtml::{RsHtml, traits::RsHtml};
 
 #[derive(RsHtml)]
 struct HomePage {
@@ -641,9 +644,14 @@ it and can specify where to render any **"child content"** it receives.
 
 **@child_content Directive**
 
-The `@child_content` directive is a special marker used inside a component's template.
+The `@child_content / @child_content()` directive is a special marker used inside a component's template.
 It indicates the exact location where the nested content, passed from
 the parent template, should be rendered.
+
+```razor
+@child_content
+@child_content() @* Parentheses are also allowed *@
+```
 
 ***components/Card.rs.html***
 
@@ -655,7 +663,7 @@ the parent template, should be rendered.
     </div>
     <div class="card-body">
         @* Any content passed to the component will be rendered here. *@
-        @child_content
+        @child_content 
     </div>
 </div>
 ```
@@ -747,6 +755,21 @@ but also complex Rust data and even other rendered chunks of HTML as parameters.
 RsHtml includes a set of built-in helper functions that are automatically available
 in all your templates. These utilities are designed to simplify common tasks like
 JSON serialization and date/time formatting.
+
+To take advantage of built-in helper functions within your templates, you first need to enable the functions feature. This requires two steps:
+
+**1. Enable the feature in `Cargo.toml`**
+
+```toml
+rshtml = { version = "*", features = ["functions"] }
+```
+
+**2. Import the `functions` in your Rust code**
+
+```rust
+use rshtml::{RsHtml, functions::*, traits::RsHtml};
+```
+
 
 ### json()
 `json<T: Serialize>(value: &T) -> String`
