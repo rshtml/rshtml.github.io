@@ -15,7 +15,7 @@ By providing powerful tools for creating reusable components and
 organizing page layouts, RsHtml makes it easier to manage the complexity
 of your user interface as it grows.
 
-In this guide, you will be introduced to `RsHtml`. If you would like to view practical examples, they are available at [`RsHtml Examples`](shttps://github.com/rshtml/examples).
+In this guide, you will be introduced to `RsHtml`. If you would like to view practical examples, they are available at [`RsHtml Examples`](https://github.com/rshtml/examples).
 
 ## 📦 Installation & Setup
 
