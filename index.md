@@ -149,7 +149,6 @@ Core support is built upon:
 ---
 <br/>
 
-LOOK:  cargo install --git https://github.com/rshtml/rshtml-analyzer.git --tag v{{ site.lsp_version }}
 
 > **Visual Studio Code**
 
@@ -200,7 +199,7 @@ Make sure to download the executable file suitable for your system from the `rsh
 ```bash
 cargo install --git https://github.com/rshtml/rshtml-analyzer.git --tag v{{ site.lsp_version }}
 ```
-[RsHtml Neovim Plugin](https://github.com/rshtml/neovim)
+[RsHtml Neovim Plugin](https://github.com/rshtml/neovim){:target="_blank"}
 
 You can use the `RsHtml` plugin for `Neovim` above or you can apply the following steps.
 
