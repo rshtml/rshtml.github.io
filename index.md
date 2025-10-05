@@ -41,7 +41,7 @@ With this configuration, the resulting paths for a struct like `HomePage` would 
 
 ```toml
 [dependencies]
-rshtml = "0.3.0"
+rshtml = "{{ site.rshtml_version }}"
 
 # The default folder and layout can be changed. This is the default setup:
 #[package.metadata.rshtml]
@@ -149,6 +149,8 @@ Core support is built upon:
 ---
 <br/>
 
+LOOK:  cargo install --git https://github.com/rshtml/rshtml-analyzer.git --tag v{{ site.lsp_version }}
+
 > **Visual Studio Code**
 
 [VS Code RsHtml Extension](https://marketplace.visualstudio.com/items?itemName=rshtml.rshtml){:target="_blank" rel="noopener noreferrer"}
@@ -178,7 +180,10 @@ name = "rshtml"
 source = { git = "https://github.com/rshtml/tree-sitter-rshtml", rev = "699be8e06cef5e07678f6c13dd9ce4ca0d4cade7" }
 ```
 
-You can download the compiled `rshtml-analyzer` code suitable for your system from the [Releases Page](https://github.com/rshtml/rshtml-analyzer/releases){:target="_blank" rel="noopener noreferrer"}.
+You can download the compiled `rshtml-analyzer` code suitable for your system from the [Releases Page](https://github.com/rshtml/rshtml-analyzer/releases){:target="_blank" rel="noopener noreferrer"} or use following command:.
+```bash
+cargo install --git https://github.com/rshtml/rshtml-analyzer.git --tag v{{ site.lsp_version }}
+```
 
 In tree-sitter, you must copy the files in the `tree-sitter-rshtml/queries/` folder to the `runtime/queries/rshtml/` location in the `helix config folder`.
 
@@ -191,7 +196,13 @@ It can be checked by the `hx --health rshtml` command.
 
 > **Neovim**
 
-Make sure to download the executable file suitable for your system from the `rshtml-analyzer` [Releases Page](https://github.com/rshtml/rshtml-analyzer/releases){:target="_blank" rel="noopener noreferrer"}.
+Make sure to download the executable file suitable for your system from the `rshtml-analyzer` [Releases Page](https://github.com/rshtml/rshtml-analyzer/releases){:target="_blank" rel="noopener noreferrer"} or to use following command:.
+```bash
+cargo install --git https://github.com/rshtml/rshtml-analyzer.git --tag v{{ site.lsp_version }}
+```
+[RsHtml Neovim Plugin](https://github.com/rshtml/neovim)
+
+You can use the `RsHtml` plugin for `Neovim` above or you can apply the following steps.
 
 Add the following code to the  `lsp/rshtml_analyzer.lua` file:
 ```lua
