@@ -146,17 +146,22 @@ Core support is built upon:
 -   **[tree-sitter-rshtml](https://github.com/rshtml/tree-sitter-rshtml){:target="_blank" rel="noopener noreferrer"}:** Provides robust and efficient parsing for accurate syntax highlighting and code analysis.
 -   **[Language Server Protocol (LSP)](https://github.com/rshtml/rshtml-analyzer){:target="_blank" rel="noopener noreferrer"}:** Provides core features like autocompletion, syntax highlighting and error checking.
 
+You can download the compiled `rshtml-analyzer` language server suitable for your system from the [Releases Page](https://github.com/rshtml/rshtml-analyzer/releases){:target="_blank" rel="noopener noreferrer"} or use following command:
+```bash
+cargo install --git https://github.com/rshtml/rshtml-analyzer.git --tag v{{ site.lsp_version }}
+```
 ---
 <br/>
 
+> ***Editor support for `RsHtml` is available for a variety of modern code editors. Click on your supported editor from the list below to visit the repository and find installation instructions:***
 
-> **Visual Studio Code**
+[![VS Code](https://img.shields.io/badge/VS%20CODE-2D72A4?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTcwLjkxMTkgOTkuMzE3MUM3Mi40ODY5IDk5LjkzMDcgNzQuMjgyOCA5OS44OTE0IDc1Ljg3MjUgOTkuMTI2NEw5Ni40NjA4IDg5LjIxOTdDOTguNjI0MiA4OC4xNzg3IDEwMCA4NS45ODkyIDEwMCA4My41ODcyVjE2LjQxMzNDMTAwIDE0LjAxMTMgOTguNjI0MyAxMS44MjE4IDk2LjQ2MDkgMTAuNzgwOEw3NS44NzI1IDAuODczNzU2QzczLjc4NjIgLTAuMTMwMTI5IDcxLjM0NDYgMC4xMTU3NiA2OS41MTM1IDEuNDQ2OTVDNjkuMjUyIDEuNjM3MTEgNjkuMDAyOCAxLjg0OTQzIDY4Ljc2OSAyLjA4MzQxTDI5LjM1NTEgMzguMDQxNUwxMi4xODcyIDI1LjAwOTZDMTAuNTg5IDIzLjc5NjUgOC4zNTM2MyAyMy44OTU5IDYuODY5MzMgMjUuMjQ2MUwxLjM2MzAzIDMwLjI1NDlDLTAuNDUyNTUyIDMxLjkwNjQgLTAuNDU0NjMzIDM0Ljc2MjcgMS4zNTg1MyAzNi40MTdMMTYuMjQ3MSA1MC4wMDAxTDEuMzU4NTMgNjMuNTgzMkMtMC40NTQ2MzMgNjUuMjM3NCAtMC40NTI1NTIgNjguMDkzOCAxLjM2MzAzIDY5Ljc0NTNMNi44NjkzMyA3NC43NTQxQzguMzUzNjMgNzYuMTA0MyAxMC41ODkgNzYuMjAzNyAxMi4xODcyIDc0Ljk5MDVMMjkuMzU1MSA2MS45NTg3TDY4Ljc2OSA5Ny45MTY3QzY5LjM5MjUgOTguNTQwNiA3MC4xMjQ2IDk5LjAxMDQgNzAuOTExOSA5OS4zMTcxWk03NS4wMTUyIDI3LjI5ODlMNDUuMTA5MSA1MC4wMDAxTDc1LjAxNTIgNzIuNzAxMlYyNy4yOTg5WiIgZmlsbD0id2hpdGUiLz48L3N2Zz4=)](https://github.com/rshtml/vscode)
+[![VSCodium](https://img.shields.io/badge/VSCODIUM-OPEN%20VSIX-2D72A4?style=for-the-badge&logo=vscodium)](https://open-vsx.org/extension/rshtml/vscode)&nbsp;&nbsp;&nbsp;&nbsp;
+[![Neovim](https://img.shields.io/badge/Neovim-008080?style=for-the-badge&logo=neovim)](https://github.com/rshtml/neovim)&nbsp;&nbsp;&nbsp;&nbsp;
+[![Zed](https://img.shields.io/badge/Zed-0651cf?style=for-the-badge&label=&message=ZED&logo=data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTQ0IDE0NCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTkgMTMuNUM5IDExLjAxNDcgMTEuMDE0NyA5IDEzLjUgOUgxMjguNjM2TDExMi44ODYgMjQuNzVIMzMuNzVDMjguNzc5NCAyNC43NSAyNC43NSAyOC43Nzk0IDI0Ljc1IDMzLjc1VjkwSDMzLjc1VjMzLjc1SDEwMy44ODZMODguMTM2IDQ5LjVINTYuMjVDNTIuNTIyMSA0OS41IDQ5LjUgNTIuNTIyMSA0OS41IDU2LjI1VjY3LjVINTguNVY1OC41SDc5LjEzNkw1LjE1OTAxIDEzMi40NzdDMC45MDY3NTcgMTM2LjcyOSAzLjkxODM3IDE0NCA5LjkzMTk4IDE0NEgxMzAuNUMxMzcuOTU2IDE0NCAxNDQgMTM3Ljk1NiAxNDQgMTMwLjVWMzEuNUgxMzVWMTMwLjVDMTM1IDEzMi45ODUgMTMyLjk4NSAxMzUgMTMwLjUgMTM1SDE1LjM2NEwzMS4xMTQgMTE5LjI1SDExMC4yNUMxMTUuMjIxIDExOS4yNSAxMTkuMjUgMTE1LjIyMSAxMTkuMjUgMTEwLjI1VjU0SDExMC4yNVYxMTAuMjVINDAuMTE0TDU1LjU4MjcgOTQuNzgxMkg4Ny43NUM5MS40Nzc5IDk0Ljc4MTIgOTQuNSA5MS43NTkyIDk0LjUgODguMDMxMlY3Ni41SDg1LjVWODUuNzgxMkg2NC41ODI3TDEzOC44NDEgMTEuNTIzQzE0My4wOTMgNy4yNzA3MyAxNDAuMDgyIDAgMTM0LjA2OCAwSDEzLjVDNi4wNDQxNiAwIDAgNi4wNDQxNiAwIDEzLjVWMTEyLjVIOVYxMy41WiIgZmlsbD0id2hpdGUiLz48L3N2Zz4g)](https://github.com/rshtml/zed)&nbsp;&nbsp;&nbsp;&nbsp;
+[![Helix](https://img.shields.io/badge/HELIX-643EB2?style=for-the-badge&logo=helix)](#helix)
 
-[VS Code RsHtml Extension](https://marketplace.visualstudio.com/items?itemName=rshtml.rshtml){:target="_blank" rel="noopener noreferrer"}
-
-The official `RsHtml for VS Code` extension is the best way to get started. It bundles the `tree-sitter` grammar and the `LSP` for a full-featured experience out of the box.
-
-> **Helix**
+### <u>***Helix***</u>
 
 Add the following language setting to your `languages.toml` file:
 
@@ -165,10 +170,15 @@ Add the following language setting to your `languages.toml` file:
 name = "rshtml"
 file-types = [{ glob = "*.rs.html" }]
 scope = "source.rshtml"
-language-servers = ["rshtml-analyzer"]
+language-servers = [
+  "rshtml-analyzer",
+  "vscode-html-language-server",
+  "superhtml",
+]
 grammar = "rshtml"
 roots = ["Cargo.lock", "Cargo.toml"]
 block-comment-tokens = { start = "@*", end = "*@" }
+indent = { tab-width = 2, unit = "  " }
 
 [language-server.rshtml-analyzer]
 command = "rshtml-analyzer"
@@ -176,10 +186,10 @@ args = ["--stdio"]
 
 [[grammar]]
 name = "rshtml"
-source = { git = "https://github.com/rshtml/tree-sitter-rshtml", rev = "699be8e06cef5e07678f6c13dd9ce4ca0d4cade7" }
+source = { git = "https://github.com/rshtml/tree-sitter-rshtml", rev = "8379a7d67c67fca21d5a45c4329eb2f61743417e" }
 ```
 
-You can download the compiled `rshtml-analyzer` code suitable for your system from the [Releases Page](https://github.com/rshtml/rshtml-analyzer/releases){:target="_blank" rel="noopener noreferrer"} or use following command:.
+You can download the compiled `rshtml-analyzer` code suitable for your system from the [Releases Page](https://github.com/rshtml/rshtml-analyzer/releases){:target="_blank" rel="noopener noreferrer"} or use following command:
 ```bash
 cargo install --git https://github.com/rshtml/rshtml-analyzer.git --tag v{{ site.lsp_version }}
 ```
@@ -193,44 +203,9 @@ It should look like this:
 
 It can be checked by the `hx --health rshtml` command.
 
-> **Neovim**
+<hr/>
 
-Make sure to download the executable file suitable for your system from the `rshtml-analyzer` [Releases Page](https://github.com/rshtml/rshtml-analyzer/releases){:target="_blank" rel="noopener noreferrer"} or to use following command:.
-```bash
-cargo install --git https://github.com/rshtml/rshtml-analyzer.git --tag v{{ site.lsp_version }}
-```
-[RsHtml Neovim Plugin](https://github.com/rshtml/neovim){:target="_blank"}
-
-You can use the `RsHtml` plugin for `Neovim` above or you can apply the following steps.
-
-Add the following code to the  `lsp/rshtml_analyzer.lua` file:
-```lua
-return {
-  cmd = { 'rshtml-analyzer', '--stdio' },
-  filetypes = { 'rshtml' },
-  root_markers = { 'Cargo.toml', 'Cargo.lock' },
-  single_file_support = true,
-}
-```
-
-To define a file type, add the following code to your `init.lua` file:
-```lua
-vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
-  pattern = '*.rs.html',
-  callback = function()
-    vim.bo.filetype = "rshtml"
-  end,
-})
-```
-
-To enable LSP, add the following code to your `init.lua` file:
-```lua
-vim.lsp.enable('rshtml-analyzer')
-```
-
-***These settings are provided for general guidance. You should adapt the LSP configuration to fit your specific setup.***
-
-Support for other editors is planned for the future.
+***Support for other editors is planned for the future. If you would like to see support for an editor that isn't listed, please open an issue to let us know.***
 
 ## ✨ Core Syntax Reference
 
