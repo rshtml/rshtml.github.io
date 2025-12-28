@@ -23,18 +23,16 @@ In this guide, you will be introduced to `RsHtml`. If you would like to view pra
 
 You can customize the view settings in your `Cargo.toml` file under the `[package.metadata.rshtml]` section.
 
-By default, view files are expected to be located in a `views` folder at the project's root. The path to the `layout` file
-is also relative to this views directory. In `debug mode`, you can configure it to output the generated code to a file, which is then included to provide the implementation. The default configuration is as follows:
+By default, view files are expected to be located in a `views` folder at the project's root. In `debug mode`, you can configure it to output the generated code to a file, which is then included to provide the implementation. The default configuration is as follows:
 
 ```toml
 [package.metadata.rshtml]
-views = { path = "views", layout = "layout.rs.html", extract_file_on_debug = false }
+views = { path = "views", extract_file_on_debug = false }
 ```
 
 With this configuration, the resulting paths for a struct like `HomePage` would be:
 
 - **View File:** &lt;project-root&gt;/views/home.rs.html
-- **Layout File:** &lt;project-root&gt;/views/layout.rs.html
 - **Extracted File:** &lt;project-root&gt;/target/rshtml/HomePage.rs
 
 <u><strong>Cargo.toml:</strong></u>
@@ -43,9 +41,9 @@ With this configuration, the resulting paths for a struct like `HomePage` would 
 [dependencies]
 rshtml = "{{ site.rshtml_version }}"
 
-# The default folder and layout can be changed. This is the default setup:
+# The default folder can be changed. This is the default setup:
 #[package.metadata.rshtml]
-#views = { path = "views", layout = "layout.rs.html", extract_file_on_debug = false }
+#views = { path = "views", extract_file_on_debug = false }
 ```
 
 ### 2. Define a Struct
@@ -74,12 +72,17 @@ You can override the default inference by providing an explicit path with the
 With `#[rshtml(path="index.rs.html")]`, `RsHtml` will look for the `index.rs.html` file,
 ignoring the struct's name for path resolution.
 
+**Turn off warnings:**
+
+`RsHtml` warnings can be disabled by providing the `no_warn` parameter; otherwise, warnings will appear in the build output. `#[rshtml(no_warn)]`.
+
 <u><strong>Struct Definition:</strong></u>
 
 ```rust
 use rshtml::{RsHtml, traits::RsHtml};
 
 #[derive(RsHtml)]
+// #[rshtml(path="index.rs.html", no_warn)]
 struct HomePage {
     username: String,
     items: Vec<String>,
@@ -186,7 +189,7 @@ args = ["--stdio"]
 
 [[grammar]]
 name = "rshtml"
-source = { git = "https://github.com/rshtml/tree-sitter-rshtml", rev = "8379a7d67c67fca21d5a45c4329eb2f61743417e" }
+source = { git = "https://github.com/rshtml/tree-sitter-rshtml", rev = "363c52c1630c491a5094ef5b369f12b4b858392a" }
 ```
 
 You can download the compiled `rshtml-analyzer` code suitable for your system from the [Releases Page](https://github.com/rshtml/rshtml-analyzer/releases){:target="_blank" rel="noopener noreferrer"} or use following command:
@@ -247,8 +250,7 @@ This ensures the entire expression is parsed and evaluated as a single unit.
 ### Control Flows & Loops
 
 > ℹ️ Inside these blocks, the closing brace `}` character has a special meaning,
-> as it marks the end of the block. If you need to render a literal closing brace `}`
-> as text within a block, you must escape it by doubling it, like so: `@@}`.
+> as it marks the end of the block. You can use `{` and `}` in a balanced way, meaning that every opening brace must be closed.
 
 #### Conditions: `@if / else / else if`
 
@@ -317,9 +319,9 @@ With `continue` and `break` directives:
 ```
 
 ```razor
-@while self.count < 10 {
-    <p> Counter is: @self.count </p>
-    @self.increment()
+@while count < 10 {
+    <p> Counter is: @count </p>
+    @(count += 1)
 }
 ```
 
@@ -447,174 +449,6 @@ in your template, you must escape it as `@@`.
 
 *Renders as: `<p>Follow us on: @rshtml_engine</p>`*
 
-## 🧩️ Include Template
-
-`@include("path/to/your/template.rs.html")`
-
-The `@include` directive is one of the simplest yet most powerful tools for keeping your
-templates organized. Think of it as a server-side `"copy-paste"` that inserts the content
-of one template file directly into another.
-
-*header.rs.html:*
-
-```razor
-<p>this is include part for content</p>
-<div> @self.my_func() </div>
-```
-
-*home.rs.html:*
-
-```razor
-<div>
-    <p>this is home page, @self.value</p>
-
-    @include("header.rs.html")
-</div>
-```
-
-Result after `include`,
-*home.rs.html:*
-
-```razor
-<div>
-    <p>this is home page, @self.value</p>
-
-    <p>this is include part for content</p>
-    <div> @self.my_func() </div>
-</div>
-```
-
-## 🏛️ Layouts
-
-### Extends
-
-`@extends / @extends('path')`
-
-The `@extends` directive is used to specify a layout for a template.
-
-- **Placement:** If used, `@extends` must be the very first statement at the top of the file.
-- **Specific Layout:** Use `@extends("path/to/layout.rs.html")` to inherit from a specific layout file.
-- **Default Layout:** Use a standalone `@extends` to inherit from the project's pre-configured default layout.
-- **No Layout:** If the `@extends` directive is omitted, the template will be **rendered without any layout**.
-
-```razor
-@extends("layout.rs.html")
-```
-
-### Section Directive
-
-`@section('name','value')`
-
-The inline `@section directive` allows you to define a section with a simple,
-single-line value.
-It takes two arguments: the section name (as a string) and the content,
-which can be either a string literal or a Rust expression.
-
-```razor
-@section("section_name", "A string value")
-@section("section_name", @self.rust_variable)
-```
-
-### Section Block
-
-`@section name { ... }`
-
-A `@section block` is the primary way to define a larger,
-multi-line chunk of content that will be injected into a layout. You define a block
-by specifying the section's name, followed by the content enclosed in curly braces `{}`.
-
-```razor
-@section menu {
-    <p>this is section menu content @self.data</p>
-}
-```
-
-### Default Content
-
-Any content in a template that is **not** placed inside a named
-`@section block` and `@section directive` is considered **default content**.
-This content is automatically captured and can be rendered within a layout.
-
-```razor
-@extends("layout.rs.html")
-
-@* This is the default content because it's not in a @section block. *@
-<h1>A Simple Page</h1>
-<p>No need to wrap this in a section block.</p>
-```
-
-### Render & Render Body
-
-`@render('section_name') / @render_body`
-
-A layout file acts as a template skeleton. To make it useful,
-you need to tell it where to place the content from the pages that extend it.
-This is done using two primary directives: `@render and @render_body`.
-
-***@render("section_name")***
-
-This directive is used to render a named section defined using `@section`.
-It takes the name of the section as a string and injects its content at that location.
-This is perfect for placing specific, named content blocks like
-a page title, a sidebar, or custom scripts.
-
-**@render_body**
-
-This special directive is used to render the **default content** from an extending
-template—that is, any content not wrapped in a named `@section` block.
-It doesn't take any arguments and simply marks the spot where the main body
-of the page should be placed.
-
-```razor
-@render_body
-@render_body() @* Parentheses are also allowed *@
-```
-
-***render and render_body:***
-
-```razor
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>@render("title") - My Website</title>
-</head>
-<body>
-    <div class="container">
-        <main>
-            @render_body
-        </main>
-        <aside>
-            @render("sidebar")
-        </aside>
-    </div>
-</body>
-</html>
-```
-
-In this layout:
-
-- The `<title>` will be filled by a section named `"title"`.
-- The `<main>` tag will be filled with the default, primary content of the page.
-- The `<aside>` tag will be filled by a section named `"sidebar"`.
-
-
-***The `has_section("section_name")` function and `layout` constant***
-
-The `has_section()` function can be used to check if a section exists.
-
-```razor
-@if has_section("section_name") {
-    <p>The section "section_name" exists.</p>
-}
-```
-
-Additionally, the `layout` constant can be used to get the name of the current layout.
-
-```razor
-Layout name: @layout
-```
-
 ## 🧱 Components
 
 Components are reusable, self-contained pieces of UI that encapsulate both markup and logic.
@@ -626,6 +460,32 @@ A component is simply another .rs.html template that can accept parameters (prop
 
 A component is defined in its own `.rs.html` file. It can access parameters passed to
 it and can specify where to render any **"child content"** it receives.
+
+**Template Parameters @(name: Type)**
+
+Component parameters must be defined at the very top of the file, excluding whitespace. The parameters passed to the component should be specified here. Parameters are defined using the syntax `@(count: i32, name: &str, title)`. If a type is not specified as in the third parameter of the example, it implies that the parameter expects a type implementing `Display`.
+
+Furthermore, if a component parameter is passed as a block (e.g., `<Component title = {this is block}/>`), it is treated as an untyped parameter. When rendering, it should be printed as `@#title` to disable escaping; otherwise, printing it as `@title` will apply escaping to the entire content. However, if the block parameter is accepted with an explicit type, the application of escaping becomes irrelevant. The type for a block parameter is `Block<impl Render>`. Example usage includes `@(title: Block<impl Render>)` or simply `@(title)`.
+
+When providing component parameters at the call site, the name is significant rather than the order. A parameter passed with the name `title` will be captured by the name `title`. If no additional processing is required on the parameters and they are intended solely for rendering to the screen, they can be utilized directly without explicit typing.
+
+***components/Card.rs.html***
+```razor
+@(title, footer, content: String) @* Component parameters *@
+
+<p>
+@title
+</p>
+
+@footer
+
+@(content.to_uppercase())
+```
+
+***Card usage***
+```razor
+<Card title="title" footer={<p>footer</p>}, content=@content />
+```
 
 **@child_content Directive**
 
@@ -641,7 +501,7 @@ the parent template, should be rendered.
 ***components/Card.rs.html***
 
 ```razor
-@* This component expects a 'title' parameter. *@
+@(title) @* This component expects a 'title' parameter. *@
 <div class="card">
     <div class="card-header">
         @title @* title prop rendered here. *@
