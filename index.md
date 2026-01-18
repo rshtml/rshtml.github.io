@@ -4,36 +4,11 @@ layout: default
 
 ## 🚀 Introduction
 
-RsHtml is a powerful template engine that transforms
-your HTML templates into highly efficient Rust code at **compile time**.
-It allows you to seamlessly embed Rust logic and expressions directly
-into your templates, harnessing the full power of Rust for
-dynamic content generation.
-
-It is designed to help you build well-structured and maintainable web applications.
-By providing powerful tools for creating reusable components and
-organizing page layouts, RsHtml makes it easier to manage the complexity
-of your user interface as it grows.
-
-In this guide, you will be introduced to `RsHtml`. If you would like to view practical examples, they are available at [`RsHtml Examples`](https://github.com/rshtml/examples){:target="_blank"}.
+RsHtml is a powerful template engine that transforms your HTML templates into highly efficient Rust code at compile time, allowing you to seamlessly use Rust logic and expressions together with HTML to harness the full power of Rust for dynamic content generation. It is designed to help you build flexible and maintainable web applications.
 
 ## 📦 Installation & Setup
 
 ### 1. Add to `Cargo.toml`
-
-You can customize the view settings in your `Cargo.toml` file under the `[package.metadata.rshtml]` section.
-
-By default, view files are expected to be located in a `views` folder at the project's root. In `debug mode`, you can configure it to output the generated code to a file, which is then included to provide the implementation. The default configuration is as follows:
-
-```toml
-[package.metadata.rshtml]
-views = { path = "views", extract_file_on_debug = false }
-```
-
-With this configuration, the resulting paths for a struct like `HomePage` would be:
-
-- **View File:** &lt;project-root&gt;/views/home.rs.html
-- **Extracted File:** &lt;project-root&gt;/target/rshtml/HomePage.rs
 
 <u><strong>Cargo.toml:</strong></u>
 
@@ -41,110 +16,30 @@ With this configuration, the resulting paths for a struct like `HomePage` would 
 [dependencies]
 rshtml = "{{ site.rshtml_version }}"
 
-# The default folder can be changed. This is the default setup:
+# rshtml = { version = "{{ site.rshtml_version }}", features = ["functions"] }
+
+# For RsHtml derive macro, the default folder can be changed.
+# This is the default setup:
 #[package.metadata.rshtml]
 #views = { path = "views", extract_file_on_debug = false }
 ```
+* To use the helper functions, the `functions` feature must be enabled.
+* For RsHtml derive macro:
 
-### 2. Define a Struct
+    By default, view files are expected to be located in a views folder at the project's root. In debug mode, you can configure it to output the generated code to a file, which is then included to provide the implementation. The default configuration is as follows:
 
-The `RsHtml derive macro` automatically handles the implementation of the `RsHtml trait` for your structs.
-It provides two ways to determine the template file path: by inference or by an explicit path.
-
-**Path Inference (Default Behavior)**
-
-By default, if no parameters are specified, the macro infers the template path from
-the struct's name using the following convention:
-
-    1. It removes the Page suffix from the struct name.
-    2. It converts the remaining part of the name to lowercase using `snake_case` method.
-    3. It appends the .rs.html extension.
-
-**Example:**
-For a struct named `HomePage`, the inferred path will be `home.rs.html`.
-
-**Explicit Path (Overriding Inference)**
-
-You can override the default inference by providing an explicit path with the
-`#[rshtml(path = "...")]` attribute. This forces `RsHtml` to use the specified file.
-
-**Example:**
-With `#[rshtml(path="index.rs.html")]`, `RsHtml` will look for the `index.rs.html` file,
-ignoring the struct's name for path resolution.
-
-**Turn off warnings:**
-
-`RsHtml` warnings can be disabled by providing the `no_warn` parameter; otherwise, warnings will appear in the build output. `#[rshtml(no_warn)]`.
-
-<u><strong>Struct Definition:</strong></u>
-
-```rust
-use rshtml::{RsHtml, traits::RsHtml};
-
-#[derive(RsHtml)]
-// #[rshtml(path="index.rs.html", no_warn)]
-struct HomePage {
-    username: String,
-    items: Vec<String>,
-}
+<u><strong>Cargo.toml:</strong></u>
+```toml
+[package.metadata.rshtml]
+views = { path = "views", extract_file_on_debug = false }
 ```
 
-### 3. Render The Template
+With this configuration, the resulting paths for a struct like HomePage would be:
 
-Once your struct is defined, you can render its corresponding template by creating
-an instance of the struct and then calling the `.render()` method.
-This method returns a `Result<String, std::fmt::Error>` containing the final HTML output.
+- **View File:** &lt;project-root&gt;/views/home.rs.html
+- **Extracted File:** &lt;project-root&gt;/target/rshtml/HomePage.rs
 
-**Accessing Data and Logic in the View**
-
-Inside your `.rs.html` template, you have full access to the
-fields and methods of your struct instance through the `self` keyword.
-
-```razor
-    <p>Welcome, @self.title</p>
-    <span>Your formatted name is: @self.get_formatted_name()</span>
-```
-
-<u><strong>Template Rendering:</strong></u>
-
-```rust
-fn main() {
-    let page = HomePage {
-        title: "RsHtml".to_string(),
-        items: vec!["Item 1".to_string(), "Item 2".to_string()],
-    };
-
-    let html_output = page.render().unwrap();
-    println!("{}", html_output);
-}
-```
-
-### 4. Tracking Template Changes
-
-> 💡 **Optional, Highly Recommended**
-
-To ensure that `cargo` automatically recompiles your project when a template file is modified,
-you can create a `build.rs` file in the root of your project.
-This improves the development experience by making sure your
-changes are always reflected without needing a full `cargo clean`.
-
-<u><strong>build.rs:</strong></u>
-
-```rust
-use rshtml::track_views_folder;
-
-fn main() {
-    // This function tells cargo to re-run the build script if
-    // any file inside the configured views directory changes.
-    track_views_folder();
-}
-```
-
-### 5. Editor Support
-
-RsHtml offers a rich editing experience powered by modern tooling. Our goal is to provide seamless integration with your favorite editors.
-
-Core support is built upon:
+## 🧩 Editor Support
 
 -   **[tree-sitter-rshtml](https://github.com/rshtml/tree-sitter-rshtml){:target="_blank" rel="noopener noreferrer"}:** Provides robust and efficient parsing for accurate syntax highlighting and code analysis.
 -   **[Language Server](https://github.com/rshtml/rshtml-analyzer){:target="_blank" rel="noopener noreferrer"}:** Provides core features like autocompletion, syntax highlighting and error checking.
@@ -210,9 +105,208 @@ It can be checked by the `hx --health rshtml` command.
 
 ***Support for other editors is planned for the future. If you would like to see support for an editor that isn't listed, please open an issue to let us know.***
 
-## ✨ Core Syntax Reference
+## ✨ v! Macro
 
-### Expressions
+The `v!` macro is a procedural macro that allows you to write well-structured HTML (where all opened tags must be properly closed) while embedding Rust code using rust blocks (`{}`). It produces a portable view type and internally uses a closure-based implementation.
+
+The type generated by the `v!` macro implements the `View` trait, which means it can be passed around as `impl View` or returned as a return type. Inside the HTML content, you can also embed Rust expressions in attribute values using rust blocks (`{}`). The rust block is evaluated and its result is injected directly into the output, so it expects an expression. The returned value must implement either the `Display` or the `View` trait.  
+The `v!` macro is a simple yet powerful tool that allows you to dynamically compose HTML fragments with Rust and build complex views by combining them together.
+
+**Simple example usage of the `v!` macro**
+```rust
+use rshtml::{traits::View, v};
+use std::fmt;
+
+fn main() -> fmt::Result {
+    let template = "RsHtml";
+    let hello = v!(<p>Hello {template}</p>);
+
+    let mut out = String::with_capacity(hello.text_size());
+
+    hello.render(&mut out)?;
+
+    print!("{out}");
+
+    Ok(())
+}
+```
+
+Some examples of usage:
+
+```rust
+fn foo() -> impl View {
+    let x = 5;
+    let s = String::from("hi");
+
+    v!(this is x: {x}, this is s: {s})
+}
+
+fn bar() -> Box<dyn View> {
+    let x = 5;
+    let s = String::from("hey");
+
+    if x == 5 {
+        v!(this is x: {x}, this is s: {s}).boxed()
+    } else {
+        v!(oooo).boxed()
+    }
+}
+
+fn try() {
+    let mut numbers = Vec::new();
+    for i in 0..10 {
+        numbers.push(v!(<li>{i}</li>));
+    }
+
+    let res = v!(
+        {card()}
+
+        {bar()}
+
+        <ul>
+            {&numbers}
+        </ul>
+    );
+}
+
+```
+
+### The View Trait
+
+The `View` trait is the core trait used by the `v!` macro. By implementing the `View` trait for your own struct, you can integrate your custom types with the `v!` macro and use it seamlessly within templates.
+
+Usage Example:
+
+```rust
+struct Home {
+    title: String,
+    count: i32,
+}
+
+impl View for Home {
+    fn render(&self, out: &mut dyn Write) -> fmt::Result {
+        v!(<div>Home Page, title:{&self.title}, count:{self.count}</div>)(out)
+    }
+}
+
+#[test]
+fn view_trait() {
+    let mut out = String::with_capacity(24);
+
+    let home = Home {
+        title: "home title".to_owned(),
+        count: 7,
+    };
+
+    home.render(&mut out).unwrap();
+
+    assert_eq!(
+        out,
+        "<div> Home Page , title : home title , count : 7 </div>"
+    )
+}
+
+```
+
+## 🧱 RsHtml Derive Macro
+
+### 1. Define a Struct
+
+The `RsHtml derive macro` automatically handles the implementation of the `RsHtml trait` for your structs.
+It provides two ways to determine the template file path: by inference or by an explicit path.
+
+**Path Inference (Default Behavior)**
+
+By default, if no parameters are specified, the macro infers the template path from
+the struct's name using the following convention:
+
+    1. It removes the Page suffix from the struct name.
+    2. It converts the remaining part of the name to lowercase using `snake_case` method.
+    3. It appends the .rs.html extension.
+
+**Example:**
+For a struct named `HomePage`, the inferred path will be `home.rs.html`.
+
+**Explicit Path (Overriding Inference)**
+
+You can override the default inference by providing an explicit path with the
+`#[rshtml(path = "...")]` attribute. This forces `RsHtml` to use the specified file.
+
+**Example:**
+With `#[rshtml(path="index.rs.html")]`, `RsHtml` will look for the `index.rs.html` file,
+ignoring the struct's name for path resolution.
+
+**Turn off warnings:**
+
+`RsHtml` warnings can be disabled by providing the `no_warn` parameter; otherwise, warnings will appear in the build output. `#[rshtml(no_warn)]`.
+
+<u><strong>Struct Definition:</strong></u>
+
+```rust
+use rshtml::{RsHtml, traits::RsHtml};
+
+#[derive(RsHtml)]
+// #[rshtml(path="index.rs.html", no_warn)]
+struct HomePage {
+    username: String,
+    items: Vec<String>,
+}
+```
+
+### 2. Render The Template
+
+Once your struct is defined, you can render its corresponding template by creating
+an instance of the struct and then calling the `.render()` method.
+This method returns a `Result<String, std::fmt::Error>` containing the final HTML output.
+
+**Accessing Data and Logic in the View**
+
+Inside your `.rs.html` template, you have full access to the
+fields and methods of your struct instance through the `self` keyword.
+
+```razor
+    <p>Welcome, @self.title</p>
+    <span>Your formatted name is: @self.get_formatted_name()</span>
+```
+
+<u><strong>Template Rendering:</strong></u>
+
+```rust
+fn main() {
+    let page = HomePage {
+        title: "RsHtml".to_string(),
+        items: vec!["Item 1".to_string(), "Item 2".to_string()],
+    };
+
+    let html_output = page.render().unwrap();
+    println!("{}", html_output);
+}
+```
+
+### 3. Tracking Template Changes
+
+> 💡 **Optional, Highly Recommended**
+
+To ensure that `cargo` automatically recompiles your project when a template file is modified,
+you can create a `build.rs` file in the root of your project.
+This improves the development experience by making sure your
+changes are always reflected without needing a full `cargo clean`.
+
+<u><strong>build.rs:</strong></u>
+
+```rust
+use rshtml::track_views_folder;
+
+fn main() {
+    // This function tells cargo to re-run the build script if
+    // any file inside the configured views directory changes.
+    track_views_folder();
+}
+```
+
+### Core Syntax Reference
+
+#### Expressions
 
 `@expression / @(expression)`
 
@@ -247,12 +341,12 @@ This ensures the entire expression is parsed and evaluated as a single unit.
 <p>@((self.value * 10).pow(2))</p>
 ```
 
-### Control Flows & Loops
+#### Control Flows & Loops
 
 > ℹ️ Inside these blocks, the closing brace `}` character has a special meaning,
 > as it marks the end of the block. You can use `{` and `}` in a balanced way, meaning that every opening brace must be closed.
 
-#### Conditions: `@if / else / else if`
+##### Conditions: `@if / else / else if`
 
 The syntax for RsHtml control flows,
 is defined as `@<directive> <rust-expression> { <inner-template> } ..`
@@ -275,7 +369,7 @@ is defined as `@<directive> <rust-expression> { <inner-template> } ..`
 }
 ```
 
-#### Loops: `@for / @while`
+##### Loops: `@for / @while`
 
 RsHtml allows you to use Rust's native `@for` and `@while` loops to generate
 repetitive template content.
@@ -325,7 +419,7 @@ With `continue` and `break` directives:
 }
 ```
 
-#### Pattern Matching: `@match`
+##### Pattern Matching: `@match`
 
 The arms of an @match expression in RsHtml are highly flexible.
 
@@ -345,7 +439,7 @@ The arms of an @match expression in RsHtml are highly flexible.
 }
 ```
 
-### Comments
+#### Comments
 
 `@* ... *@`
 
@@ -353,7 +447,7 @@ The arms of an @match expression in RsHtml are highly flexible.
 @* this is server side comment, it will not appear in the html output *@
 ```
 
-### Rust Code Blocks
+#### Rust Code Blocks
 
 `@{...}`
 
@@ -378,7 +472,7 @@ This allows you to declare variables and perform complex operations.
 <p>@message</p>
 ```
 
-### Raw Output
+#### Raw Output
 
 `@raw { ... }`
 
@@ -409,10 +503,10 @@ and comments, will be ignored and treated as literal text.
 <p>Count value: {{ count }}</p>
 ```
 
-### Rendering & Escaping
+#### Rendering & Escaping
 `@#` ~ `@@`
 
-#### Raw Rendering (The @# Prefix)
+##### Raw Rendering (The @# Prefix)
 
 By default, RsHtml prioritizes security. Any output from a Rust expression
 `(@self.my_var)` is automatically HTML-escaped.
@@ -449,14 +543,14 @@ in your template, you must escape it as `@@`.
 
 *Renders as: `<p>Follow us on: @rshtml_engine</p>`*
 
-## 🧱 Components
+### Components
 
 Components are reusable, self-contained pieces of UI that encapsulate both markup and logic.
 They are the building blocks of a modern, maintainable architecture.
 
 A component is simply another .rs.html template that can accept parameters (props) and render child content.
 
-### Defining a Component
+#### Defining a Component
 
 A component is defined in its own `.rs.html` file. It can access parameters passed to
 it and can specify where to render any **"child content"** it receives.
@@ -513,7 +607,7 @@ the parent template, should be rendered.
 </div>
 ```
 
-### Importing Components
+#### Importing Components
 
 `@use "path/to/component.rs.html" as Component`
 
@@ -537,7 +631,7 @@ Before you can use a component, you must import it using the `@use` directive.
 @use "components/Alert" as Alert
 ```
 
-### Using Components
+#### Using Components
 
 `<Component title=@self.title is_ok=true />`
 
@@ -568,7 +662,7 @@ like `<UserProfile>` from a standard HTML tag like `<p>`.
 </Alert>
 ```
 
-### Passing Data (Parameters & Attributes)
+#### Passing Data (Parameters & Attributes)
 
 Data can be passed to components using attributes: `<Component attributes />`. RsHtml supports several data types:
 
