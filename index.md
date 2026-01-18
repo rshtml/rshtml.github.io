@@ -228,7 +228,7 @@ v! {
 }
 ```
 
-The view_iter() function enables efficient rendering of iterator output inside views, avoiding unnecessary allocations.
+The `view_iter()` function enables efficient rendering of iterator output inside views, avoiding unnecessary allocations.
 
 #### The `boxed()` Function
 
