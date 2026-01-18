@@ -208,6 +208,50 @@ fn view_trait() {
 
 ```
 
+#### The `view_iter()` Iterator Extension
+
+To pass iterator results into a view without calling `collect`, use the `view_iter()` extension function.  
+This function is provided as a trait extension for iterator types and allows views to consume iterators directly.
+
+**Example**
+
+```rust
+let card_views = cards
+    .iter()
+    .map(|card| v!(<div class="card">{&card.title}</div>))
+    .view_iter(); // extension function
+
+v! {
+    <div>
+        { card_views }
+    </div>
+}
+```
+
+The view_iter() function enables efficient rendering of iterator output inside views, avoiding unnecessary allocations.
+
+#### The `boxed()` Function
+
+The `boxed()` function is provided for wrapping views inside a `Box`.  
+It can be used to erase concrete view types and unify return types when working with conditional branches.
+
+##### Example
+
+```rust
+fn do_boxed() -> Box<dyn View> {
+    let x = 5;
+    let s = String::from("hi");
+
+    if x == 5 {
+        v!(this is x: {x}, this is s: {s}).boxed()
+    } else {
+        v!(oooo).boxed()
+    }
+}
+```
+
+The `boxed(`) function enables returning dynamically dispatched views by boxing them into a `Box<dyn View>`.
+
 ## 🧱 RsHtml Derive Macro
 
 ### 1. Define a Struct
