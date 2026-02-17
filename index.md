@@ -239,28 +239,6 @@ The `boxed()` function enables returning dynamically dispatched views by boxing 
 
 The `View derive macro` automatically handles the implementation of the `View trait` for your structs. With this implementation, it becomes usable together with the `v!` macro. It processes the rs.html file while doing this. You can specify the path relative to `CARGO_MANIFEST_DIR` or the current directory using the `path` parameter. If the `path` parameter is not provided, it removes `Page` from the struct name, converts it to `snake_case`, adds the `.rs.html` extension, and looks in the `views` folder; for example, for a struct named `HomePage`, the inferred path will be `views/home.rs.html`. You can provide the `path` parameter like this: `#[view(path="index.rs.html")]`.
 
-**Path Inference (Default Behavior)**
-
-By default, if no parameters are specified, the macro infers the template path from
-the struct's name using the following convention:
-
-    1. It removes the Page suffix from the struct name.
-    2. It converts the remaining part of the name to lowercase using `snake_case` method.
-    3. It appends the .rs.html extension.
-    4. It appends 'views' prefix.
-
-**Example:**
-For a struct named `HomePage`, the inferred path will be `views/home.rs.html`.
-
-**Explicit Path (Overriding Inference)**
-
-You can override the default inference by providing an explicit path with the
-`#[view(path = "...")]` attribute. This forces `RsHtml` to use the specified file.
-
-**Example:**
-With `#[view(path="index.rs.html")]`, `RsHtml` will look for the `index.rs.html` file,
-ignoring the struct's name for path resolution.
-
 **Extract file:**
 
 The `extract` parameter can be used to extract the Rust sections of an `rs.html` file into the `target` directory and include them via a macro. This approach simplifies error handling and improves compiler diagnostics. By default, `extract` is set to `false`.
