@@ -6,9 +6,9 @@ layout: default
 
 RsHtml is a powerful template engine that transforms your HTML templates into highly efficient Rust code at compile time, allowing you to seamlessly use Rust logic and expressions together with HTML to harness the full power of Rust for dynamic content generation. It is designed to help you build flexible and maintainable web applications.
 
-## 📦 Installation & Setup
+## 📦 Installation
 
-### 1. Add to `Cargo.toml`
+### Add to `Cargo.toml`
 
 <u><strong>Cargo.toml:</strong></u>
 
@@ -231,13 +231,13 @@ fn do_boxed() -> Box<dyn View> {
 }
 ```
 
-The `boxed(`) function enables returning dynamically dispatched views by boxing them into a `Box<dyn View>`.
+The `boxed()` function enables returning dynamically dispatched views by boxing them into a `Box<dyn View>`.
 
 ## 🧱 View Derive Macro
 
 ### 1. Define a Struct
 
-The `View derive macro` automatically handles the implementation of the `View trait` for your structs. With this implementation, it becomes usable together with the `v!` macro. It provides two ways to determine the template file path: by inference or by an explicit path.
+The `View derive macro` automatically handles the implementation of the `View trait` for your structs. With this implementation, it becomes usable together with the `v!` macro. It processes the rs.html file while doing this. You can specify the path relative to `CARGO_MANIFEST_DIR` or the current directory using the `path` parameter. If the `path` parameter is not provided, it removes `Page` from the struct name, converts it to `snake_case`, adds the `.rs.html` extension, and looks in the `views` folder; for example, for a struct named `HomePage`, the inferred path will be `views/home.rs.html`. You can provide the `path` parameter like this: `#[view(path="index.rs.html")]`.
 
 **Path Inference (Default Behavior)**
 
@@ -544,10 +544,9 @@ the parent template, should be rendered.
 @(title) @* This component expects a 'title' parameter. *@
 <div class="card">
     <div class="card-header">
-        @title @* title prop rendered here. *@
+        @title
     </div>
     <div class="card-body">
-        @* Any content passed to the component will be rendered here. *@
         @child_content 
     </div>
 </div>
