@@ -152,6 +152,15 @@ fn try() {
 
 ```
 
+#### 📌 Note on Whitespace and Tokens
+
+Since `v!` is a Rust procedural macro, it processes your HTML content as a stream of Rust tokens. The Rust compiler automatically strips the original whitespace between these tokens during parsing. 
+
+To prevent distinct tokens (like text and punctuation) from merging together and breaking the output, the macro safely inserts a single space between them.
+
+**For example:** Whether you write `hello.` (no space) or `hello     .` (multiple spaces), the macro reads them as the exact same two distinct tokens (`hello` and `.`). As a result, both will produce the exact same output with a single space: `hello .`
+
+
 ### The View Trait
 
 The `View` trait is the core trait used by the `v!` macro. By implementing the `View` trait for your own struct, you can integrate your custom types with the `v!` macro and use it seamlessly within templates.
