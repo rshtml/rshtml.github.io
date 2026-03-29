@@ -56,8 +56,8 @@ language-servers = [
 ]
 grammar = "rshtml"
 roots = ["Cargo.lock", "Cargo.toml"]
-block-comment-tokens = { start = "@*", end = "*@" }
 indent = { tab-width = 2, unit = "  " }
+# language-id = "html" # Required for superhtml to attach successfully
 
 [language-server.rshtml-analyzer]
 command = "rshtml-analyzer"
@@ -65,7 +65,7 @@ args = ["--stdio"]
 
 [[grammar]]
 name = "rshtml"
-source = { git = "https://github.com/rshtml/tree-sitter-rshtml", rev = "363c52c1630c491a5094ef5b369f12b4b858392a" }
+source = { git = "https://github.com/rshtml/tree-sitter-rshtml", rev = "a1499c58d4692ec5bc0faed790b4e90ab0fb8996" }
 ```
 
 You can download the compiled `rshtml-analyzer` code suitable for your system from the [Releases Page](https://github.com/rshtml/rshtml-analyzer/releases){:target="_blank" rel="noopener noreferrer"} or use following command:

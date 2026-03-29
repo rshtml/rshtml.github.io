@@ -4,4 +4,4 @@ kramdown:
   parse_block_html: true
   
 rshtml_version: "0.6.0"
-lsp_version: "0.1.6"
+lsp_version: "0.1.7"
