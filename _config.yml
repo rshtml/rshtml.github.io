@@ -3,5 +3,5 @@ markdown: kramdown
 kramdown:
   parse_block_html: true
   
-rshtml_version: "0.6.0"
+rshtml_version: "0.6.1"
 lsp_version: "0.1.7"
