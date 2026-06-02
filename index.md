@@ -293,7 +293,7 @@ fn main() {
         items: vec!["Item 1".to_string(), "Item 2".to_string()],
     };
 
-    let mut out = String::with_capacity(out.text_size());
+    let mut out = String::with_capacity(page.text_size());
 
     page.render(&mut out).unwrap();
     println!("{}", out);
