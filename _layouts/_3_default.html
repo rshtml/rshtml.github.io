@@ -12,14 +12,12 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Code+Pro:wght@400;600&display=swap"
     rel="stylesheet">
 
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.css"
     rel="stylesheet" />
 
   <style>
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     :root {
       --text-color: #212529;
@@ -43,7 +41,7 @@
       background: linear-gradient(135deg, #f3db00 0%, #f9b300 45%, #ff7c2a 100%);
       color: #1a1200;
       text-align: center;
-      padding: 50px 20px 330px;
+      padding: 70px 20px 330px;
       position: relative;
       overflow: visible;
     }
@@ -60,48 +58,23 @@
     .hero::before {
       content: '';
       position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      bottom: 0; left: 0; right: 0;
       height: 180px;
       background: linear-gradient(to bottom,
-          transparent 0%,
-          rgba(255, 255, 255, 0.1) 30%,
-          rgba(255, 255, 255, 0.5) 60%,
-          rgba(255, 255, 255, 1) 100%);
+        transparent 0%,
+        rgba(255,255,255,0.1) 30%,
+        rgba(255,255,255,0.5) 60%,
+        rgba(255,255,255,1) 100%
+      );
       z-index: 0;
       pointer-events: none;
     }
 
     .hero h1 {
-      font-family: 'Syne', sans-serif;
       font-size: 4em;
       margin: 0;
-      font-weight: 800;
+      font-weight: 700;
       color: #1a1200;
-      letter-spacing: -2px;
-    }
-
-    .h1-dim {
-      opacity: 0.3;
-      color: #1a1200;
-    }
-
-    .h1-rs {
-      color: #7c2d12;
-    }
-
-    .h1-html {
-      color: #1a1200;
-      vertical-align: -5px;
-    }
-
-    .h1-t {
-      display: inline-block;
-      transform: scaleY(0.67) translateY(9%);
-      transform-origin: center center;
-      vertical-align: baseline;
-      -webkit-text-stroke: 1.5px #1a1200;
     }
 
     .hero .version {
@@ -118,7 +91,7 @@
     .hero .description {
       font-size: 1.15em;
       max-width: 580px;
-      margin: 60px auto 40px;
+      margin: 20px auto 40px;
       font-weight: 400;
       color: #3a2a00;
     }
@@ -147,15 +120,13 @@
       background: #1e1e2e;
       border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 10px 36px rgba(0, 0, 0, 0.22);
+      box-shadow: 0 10px 36px rgba(0,0,0,0.22);
       position: absolute;
       top: 0;
       z-index: 2;
     }
 
-    .code-card.card-left .card-bar {
-      display: none;
-    }
+    .code-card.card-left .card-bar { display: none; }
 
     .code-card.card-left {
       background: transparent;
@@ -221,17 +192,17 @@
 
     .hbc-title span {
       font-weight: 700;
-      border: 1px solid rgba(26, 18, 0, 0.4);
+      border: 1px solid rgba(26,18,0,0.4);
       padding: 1px 10px;
       border-radius: 3px;
-      background: rgba(26, 18, 0, 0.06);
+      background: rgba(26,18,0,0.06);
       letter-spacing: 0.03em;
     }
 
     .hbc-ln {
       display: inline-block;
       width: 28px;
-      color: rgba(26, 18, 0, 0.3);
+      color: rgba(26,18,0,0.3);
       text-align: right;
       margin-right: 14px;
       user-select: none;
@@ -250,12 +221,12 @@
     }
 
     .hbc-active {
-      background: rgba(26, 18, 0, 0.08);
+      background: rgba(26,18,0,0.08);
     }
 
     .hbc-cursor-hollow {
       display: inline-block;
-      outline: 1.5px solid rgba(26, 18, 0, 0.7);
+      outline: 1.5px solid rgba(26,18,0,0.7);
       min-width: 0.6em;
       line-height: 1;
     }
@@ -266,38 +237,17 @@
       color: #f9b300;
       min-width: 0.6em;
     }
-
-    display: inline-block;
-    background: #1a1200;
-    color: #f9b300;
-    min-width: 0.6em;
+      display: inline-block;
+      background: #1a1200;
+      color: #f9b300;
+      min-width: 0.6em;
     }
-
-    .hbc-at {
-      color: #7a3800;
-      font-weight: 600;
-    }
-
-    .hbc-kw {
-      color: #1a1200;
-      font-weight: 700;
-    }
-
-    .hbc-fn {
-      color: #2a1800;
-    }
-
-    .hbc-tg {
-      color: #4a3000;
-    }
-
-    .hbc-attr {
-      color: #6a3500;
-    }
-
-    .hbc-st {
-      color: #3a5200;
-    }
+    .hbc-at   { color: #7a3800; font-weight: 600; }
+    .hbc-kw   { color: #1a1200; font-weight: 700; }
+    .hbc-fn   { color: #2a1800; }
+    .hbc-tg   { color: #4a3000; }
+    .hbc-attr { color: #6a3500; }
+    .hbc-st   { color: #3a5200; }
 
     .code-card .card-bar {
       background: #2a2a3e;
@@ -307,23 +257,10 @@
       gap: 6px;
     }
 
-    .card-bar .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-    }
-
-    .dot-r {
-      background: #ff5f57;
-    }
-
-    .dot-y {
-      background: #febc2e;
-    }
-
-    .dot-g {
-      background: #28c840;
-    }
+    .card-bar .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-r { background: #ff5f57; }
+    .dot-y { background: #febc2e; }
+    .dot-g { background: #28c840; }
 
     .card-bar .card-label {
       font-size: 11px;
@@ -339,43 +276,15 @@
       line-height: 1.7;
     }
 
-    .code-card .card-body .ln {
-      color: #44475a;
-      margin-right: 10px;
-      user-select: none;
-    }
-
-    .code-card .card-body .kw {
-      color: #ff79c6;
-    }
-
-    .code-card .card-body .fn {
-      color: #50fa7b;
-    }
-
-    .code-card .card-body .st {
-      color: #f1fa8c;
-    }
-
-    .code-card .card-body .cm {
-      color: #6272a4;
-    }
-
-    .code-card .card-body .tg {
-      color: #8be9fd;
-    }
-
-    .code-card .card-body .at2 {
-      color: #ffb86c;
-    }
-
-    .code-card .card-body .at {
-      color: #bd93f9;
-    }
-
-    .code-card .card-body .tx {
-      color: #f8f8f2;
-    }
+    .code-card .card-body .ln  { color: #44475a; margin-right: 10px; user-select: none; }
+    .code-card .card-body .kw  { color: #ff79c6; }
+    .code-card .card-body .fn  { color: #50fa7b; }
+    .code-card .card-body .st  { color: #f1fa8c; }
+    .code-card .card-body .cm  { color: #6272a4; }
+    .code-card .card-body .tg  { color: #8be9fd; }
+    .code-card .card-body .at2 { color: #ffb86c; }
+    .code-card .card-body .at  { color: #bd93f9; }
+    .code-card .card-body .tx  { color: #f8f8f2; }
 
     /* MAIN LAYOUT */
     .container {
@@ -386,7 +295,7 @@
       position: relative;
       background: var(--bg-color);
       border-radius: 8px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     }
 
     .toc-container {
@@ -399,22 +308,9 @@
       padding: 40px 20px 40px 0;
     }
 
-    .toc-title {
-      font-size: 1.1em;
-      font-weight: 700;
-      color: var(--text-color);
-      padding-bottom: 10px;
-      margin-bottom: 10px;
-    }
-
-    .toc-list {
-      padding-left: 0;
-      list-style: none;
-    }
-
-    .toc-list .toc-list {
-      padding-left: 20px;
-    }
+    .toc-title { font-size: 1.1em; font-weight: 700; color: var(--text-color); padding-bottom: 10px; margin-bottom: 10px; }
+    .toc-list { padding-left: 0; list-style: none; }
+    .toc-list .toc-list { padding-left: 20px; }
 
     .toc-link {
       text-decoration: none;
@@ -426,17 +322,8 @@
       transition: all 0.2s ease;
     }
 
-    .is-active-link {
-      color: var(--link-color);
-      font-weight: 600;
-      background-color: #fdf5f5;
-      border-left-color: var(--link-color);
-    }
-
-    .toc-link:hover {
-      color: var(--link-color);
-      background-color: #fdf5f5;
-    }
+    .is-active-link { color: var(--link-color); font-weight: 600; background-color: #fdf5f5; border-left-color: var(--link-color); }
+    .toc-link:hover { color: var(--link-color); background-color: #fdf5f5; }
 
     .content {
       flex-grow: 1;
@@ -447,171 +334,45 @@
       word-wrap: break-word;
     }
 
-    .content pre[class*="language-"] {
-      padding: 20px;
-      border-radius: 8px;
-      overflow-x: auto;
-      margin: 1.5em 0;
-      position: relative;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
+    .content pre[class*="language-"] { padding: 20px; border-radius: 8px; overflow-x: auto; margin: 1.5em 0; position: relative; white-space: pre-wrap; word-break: break-word; }
+    .content pre { white-space: pre-wrap; word-break: break-word; overflow-wrap: break-word; }
+    .content code { font-family: 'Source Code Pro', monospace; background-color: var(--code-bg); padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; white-space: pre-wrap; word-break: break-word; }
+    .content h2 { font-size: 2em; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-top: 60px; font-weight: 700; }
+    .content h2:first-of-type { margin-top: 0; }
+    .content h3 { font-size: 1.5em; margin-top: 40px; }
 
-    .content pre {
-      white-space: pre-wrap;
-      word-break: break-word;
-      overflow-wrap: break-word;
-    }
+    blockquote { background-color: #f0f6ff; border-left: 5px solid #5b92e5; padding: 15px 20px; margin: 20px 0; border-radius: 5px; font-size: 0.95em; }
+    blockquote p:first-of-type { margin-top: 0; }
+    blockquote p:last-of-type { margin-bottom: 0; }
 
-    .content code {
-      font-family: 'Source Code Pro', monospace;
-      background-color: var(--code-bg);
-      padding: 0.2em 0.4em;
-      border-radius: 3px;
-      font-size: 0.9em;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
+    .content table { display: inline-block; max-width: 100%; overflow-x: auto; margin: 1.5em 0; border-collapse: collapse; border: 1px solid #dfe2e5; }
+    .content th, .content td { padding: 8px 12px; border: 1px solid #dfe2e5; }
+    .content th { background-color: #f6f8fa; font-weight: 600; }
+    .content tr:nth-child(2n) { background-color: #f6f8fa; }
 
-    .content h2 {
-      font-size: 2em;
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 10px;
-      margin-top: 60px;
-      font-weight: 700;
-    }
+    .site-footer { text-align: center; padding: 25px; margin-top: 50px; border-top: 1px solid var(--border-color); color: var(--menu-link-color); font-size: 0.9em; }
+    .site-footer a { color: var(--link-color); font-weight: 600; text-decoration: none; }
+    .site-footer a:hover { text-decoration: underline; }
 
-    .content h2:first-of-type {
-      margin-top: 0;
-    }
-
-    .content h3 {
-      font-size: 1.5em;
-      margin-top: 40px;
-    }
-
-    blockquote {
-      background-color: #f0f6ff;
-      border-left: 5px solid #5b92e5;
-      padding: 15px 20px;
-      margin: 20px 0;
-      border-radius: 5px;
-      font-size: 0.95em;
-    }
-
-    blockquote p:first-of-type {
-      margin-top: 0;
-    }
-
-    blockquote p:last-of-type {
-      margin-bottom: 0;
-    }
-
-    .content table {
-      display: inline-block;
-      max-width: 100%;
-      overflow-x: auto;
-      margin: 1.5em 0;
-      border-collapse: collapse;
-      border: 1px solid #dfe2e5;
-    }
-
-    .content th,
-    .content td {
-      padding: 8px 12px;
-      border: 1px solid #dfe2e5;
-    }
-
-    .content th {
-      background-color: #f6f8fa;
-      font-weight: 600;
-    }
-
-    .content tr:nth-child(2n) {
-      background-color: #f6f8fa;
-    }
-
-    .site-footer {
-      text-align: center;
-      padding: 25px;
-      margin-top: 50px;
-      border-top: 1px solid var(--border-color);
-      color: var(--menu-link-color);
-      font-size: 0.9em;
-    }
-
-    .site-footer a {
-      color: var(--link-color);
-      font-weight: 600;
-      text-decoration: none;
-    }
-
-    .site-footer a:hover {
-      text-decoration: underline;
-    }
-
-    .toc-toggle {
-      display: none;
-    }
+    .toc-toggle { display: none; }
 
     @media (max-width: 768px) {
-      body.toc-open {
-        overflow: hidden;
-      }
+      body.toc-open { overflow: hidden; }
 
-      .hero-bg-code {
-        display: none;
-      }
+      .hero-bg-code { display: none; }
+      .hero-bg-code-left { display: none; }
+      .hero::before { height: 80px; }
 
-      .hero-bg-code-left {
-        display: none;
-      }
+      .hero { padding: 40px 20px 80px; }
+      .hero h1 { font-size: 2.5em; }
+      .hero .description { font-size: 1.05em; margin: 12px auto 22px; }
+      .hero-btn { padding: 8px 16px; font-size: 0.9em; margin: 5px; }
+      .code-card { display: none; }
 
-      .hero::before {
-        height: 80px;
-      }
-
-      .hero {
-        padding: 40px 20px 80px;
-      }
-
-      .hero h1 {
-        font-size: 2.5em;
-      }
-
-      .hero .description {
-        font-size: 1.05em;
-        margin: 12px auto 22px;
-      }
-
-      .hero-btn {
-        padding: 8px 16px;
-        font-size: 0.9em;
-        margin: 5px;
-      }
-
-      .code-card {
-        display: none;
-      }
-
-      .hero {
-        padding: 50px 20px 80px;
-      }
-
-      .hero h1 {
-        font-size: 2.5em;
-      }
-
-      .hero .description {
-        font-size: 1.05em;
-        margin: 12px auto 22px;
-      }
-
-      .hero-buttons a {
-        padding: 8px 16px;
-        font-size: 0.9em;
-        margin: 5px;
-      }
+      .hero { padding: 50px 20px 80px; }
+      .hero h1 { font-size: 2.5em; }
+      .hero .description { font-size: 1.05em; margin: 12px auto 22px; }
+      .hero-buttons a { padding: 8px 16px; font-size: 0.9em; margin: 5px; }
 
       .hero-cards {
         position: relative;
@@ -626,15 +387,12 @@
         z-index: 5;
       }
 
-      .hero-cards .code-card:nth-child(2) {
-        margin-top: 0;
-      }
+      .hero-cards .code-card:nth-child(2) { margin-top: 0; }
 
       .toc-toggle {
         display: block;
         position: fixed;
-        top: 0;
-        left: 10px;
+        top: 0; left: 10px;
         z-index: 1100;
         background: #ff7c2a;
         color: white;
@@ -643,14 +401,13 @@
         border-radius: 6px;
         font-size: 1em;
         cursor: pointer;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
         margin: 10px;
       }
 
       .toc-container {
         position: fixed;
-        top: 0;
-        left: 0;
+        top: 0; left: 0;
         background: white;
         width: 80%;
         max-width: 320px;
@@ -659,35 +416,23 @@
         padding: 20px;
         transform: translateX(-100%);
         transition: transform 0.3s ease;
-        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 2px 0 10px rgba(0,0,0,0.1);
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
       }
 
-      .toc-container.open {
-        transform: translateX(0);
-      }
+      .toc-container.open { transform: translateX(0); }
 
-      .container {
-        display: block;
-        margin-top: 0;
-      }
-
-      .content {
-        padding: 20px;
-        border-left: none;
-      }
+      .container { display: block; margin-top: 0; }
+      .content { padding: 20px; border-left: none; }
     }
   </style>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
   <header class="hero">
-    <h1><span class="h1-dim">{ </span><span class="h1-rs">Rs</span><span class="h1-dim"> }::</span><span
-        class="h1-dim">⟨</span><span class="h1-html">H<span class="h1-t">Ꞇ</span>ml</span><span class="h1-dim">⟩</span>
-    </h1>
+    <h1>RsHtml</h1>
     <p class="description">A compile-time, type-safe, lightweight and flexible template engine for Rust,
       designed to seamlessly integrate both Rust code into HTML templates and HTML into Rust code.</p>
 
@@ -703,96 +448,62 @@
 
     <div class="hero-bg-code-left">
       <div class="hbc-title"><span>cards.rs</span></div>
-      <div class="hbc-line"><span class="hbc-ln">4</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hbc-kw">fn</span> <span
-          class="hbc-fn">cards</span>(cards: &amp;[Card]) -&gt; <span class="hbc-kw">impl</span> View {</div>
-      <div class="hbc-line"><span class="hbc-ln">3</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
-          class="hbc-kw">let mut</span> card_views = Vec::new();</div>
+      <div class="hbc-line"><span class="hbc-ln">4</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hbc-kw">fn</span> <span class="hbc-fn">cards</span>(cards: &amp;[Card]) -&gt; <span class="hbc-kw">impl</span> View {</div>
+      <div class="hbc-line"><span class="hbc-ln">3</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hbc-kw">let mut</span> card_views = Vec::new();</div>
       <div class="hbc-line"><span class="hbc-ln">2</span>&nbsp;</div>
-      <div class="hbc-line"><span class="hbc-ln">1</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
-          class="hbc-at">@for</span> card in cards {</div>
-      <div class="hbc-line hbc-active"><span
-          class="hbc-ln hbc-ln-cur">0</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ca<span
-          class="hbc-cursor">r</span>d_views.push(v!(<span class="hbc-tg">&lt;div</span> <span
-          class="hbc-attr">class</span>=<span class="hbc-st">"card"</span><span class="hbc-tg">&gt;</span></div>
-      <div class="hbc-line"><span
-          class="hbc-ln">1</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&amp;card.title}
-      </div>
-      <div class="hbc-line"><span
-          class="hbc-ln">2</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
-          class="hbc-tg">&lt;/div&gt;</span>));</div>
+      <div class="hbc-line"><span class="hbc-ln">1</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hbc-at">@for</span> card in cards {</div>
+      <div class="hbc-line hbc-active"><span class="hbc-ln hbc-ln-cur">0</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ca<span class="hbc-cursor">r</span>d_views.push(v!(<span class="hbc-tg">&lt;div</span> <span class="hbc-attr">class</span>=<span class="hbc-st">"card"</span><span class="hbc-tg">&gt;</span></div>
+      <div class="hbc-line"><span class="hbc-ln">1</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&amp;card.title}</div>
+      <div class="hbc-line"><span class="hbc-ln">2</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hbc-tg">&lt;/div&gt;</span>));</div>
       <div class="hbc-line"><span class="hbc-ln">3</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</div>
       <div class="hbc-line"><span class="hbc-ln">4</span>&nbsp;</div>
       <div class="hbc-line"><span class="hbc-ln">5</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v! {</div>
-      <div class="hbc-line"><span
-          class="hbc-ln">6</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
-          class="hbc-tg">&lt;div&gt;</span></div>
-      <div class="hbc-line"><span
-          class="hbc-ln">7</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
-        card_views }</div>
-      <div class="hbc-line"><span
-          class="hbc-ln">8</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
-          class="hbc-tg">&lt;/div&gt;</span></div>
+      <div class="hbc-line"><span class="hbc-ln">6</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hbc-tg">&lt;div&gt;</span></div>
+      <div class="hbc-line"><span class="hbc-ln">7</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ card_views }</div>
+      <div class="hbc-line"><span class="hbc-ln">8</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hbc-tg">&lt;/div&gt;</span></div>
       <div class="hbc-line"><span class="hbc-ln">9</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</div>
       <div class="hbc-line"><span class="hbc-ln">10</span>&nbsp;&nbsp;&nbsp;&nbsp;}</div>
     </div>
 
     <div class="hero-bg-code-left" style="top: auto;">
       <div class="hbc-title"><span>main.rs</span></div>
-      <div class="hbc-line"><span class="hbc-ln">2</span><span class="hbc-kw">fn</span> <span
-          class="hbc-fn">main</span>() {</div>
-      <div class="hbc-line"><span class="hbc-ln">1</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hbc-kw">let</span> page =
-        cards(&amp;get_cards());</div>
-      <div class="hbc-line hbc-active"><span class="hbc-ln hbc-ln-cur">0</span>&nbsp;&nbsp;&nbsp;&nbsp;<span
-          class="hbc-kw">let <span class="hbc-cursor-hollow">m</span>ut</span> out = String::with_capacity(</div>
-      <div class="hbc-line"><span
-          class="hbc-ln">1</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(page.text_size() <span
-          class="hbc-kw">as</span> f32 * 1.1) <span class="hbc-kw">as</span> usize</div>
+      <div class="hbc-line"><span class="hbc-ln">2</span><span class="hbc-kw">fn</span> <span class="hbc-fn">main</span>() {</div>
+      <div class="hbc-line"><span class="hbc-ln">1</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hbc-kw">let</span> page = cards(&amp;get_cards());</div>
+      <div class="hbc-line hbc-active"><span class="hbc-ln hbc-ln-cur">0</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hbc-kw">let <span class="hbc-cursor-hollow">m</span>ut</span> out = String::with_capacity(</div>
+      <div class="hbc-line"><span class="hbc-ln">1</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(page.text_size() <span class="hbc-kw">as</span> f32 * 1.1) <span class="hbc-kw">as</span> usize</div>
       <div class="hbc-line"><span class="hbc-ln">2</span>&nbsp;&nbsp;&nbsp;&nbsp;);</div>
       <div class="hbc-line"><span class="hbc-ln">3</span>&nbsp;</div>
-      <div class="hbc-line"><span class="hbc-ln">4</span>&nbsp;&nbsp;&nbsp;&nbsp;page.render(&amp;<span
-          class="hbc-kw">mut</span> out).unwrap();</div>
-      <div class="hbc-line"><span class="hbc-ln">5</span>&nbsp;&nbsp;&nbsp;&nbsp;println!(<span
-          class="hbc-st">"{out}"</span>);</div>
+      <div class="hbc-line"><span class="hbc-ln">4</span>&nbsp;&nbsp;&nbsp;&nbsp;page.render(&amp;<span class="hbc-kw">mut</span> out).unwrap();</div>
+      <div class="hbc-line"><span class="hbc-ln">5</span>&nbsp;&nbsp;&nbsp;&nbsp;println!(<span class="hbc-st">"{out}"</span>);</div>
       <div class="hbc-line"><span class="hbc-ln">6</span>}</div>
     </div>
 
     <div class="hero-bg-code">
       <div class="hbc-title"><span>home.rs.html</span></div>
-      <div class="hbc-line"><span class="hbc-ln">7</span><span class="hbc-tg">&lt;h1&gt;</span>Welcome to RsHtml<span
-          class="hbc-tg">&lt;/h1&gt;</span></div>
+      <div class="hbc-line"><span class="hbc-ln">7</span><span class="hbc-tg">&lt;h1&gt;</span>Welcome to RsHtml<span class="hbc-tg">&lt;/h1&gt;</span></div>
       <div class="hbc-line"><span class="hbc-ln">6</span>&nbsp;</div>
-      <div class="hbc-line"><span class="hbc-ln">5</span><span class="hbc-at">@use</span> <span
-          class="hbc-st">"Component.rs.html"</span> as Component</div>
+      <div class="hbc-line"><span class="hbc-ln">5</span><span class="hbc-at">@use</span> <span class="hbc-st">"Component.rs.html"</span> as Component</div>
       <div class="hbc-line"><span class="hbc-ln">4</span>&nbsp;</div>
-      <div class="hbc-line"><span class="hbc-ln">3</span><span class="hbc-tg">&lt;Component</span> <span
-          class="hbc-attr">title</span>=<span class="hbc-st">"home"</span> <span class="hbc-attr">is_ok</span>=<span
-          class="hbc-kw">true</span><span class="hbc-tg">&gt;</span></div>
-      <div class="hbc-line"><span class="hbc-ln">2</span>&nbsp;&nbsp;<span class="hbc-tg">&lt;p&gt;</span>child
-        content<span class="hbc-tg">&lt;/p&gt;</span></div>
+      <div class="hbc-line"><span class="hbc-ln">3</span><span class="hbc-tg">&lt;Component</span> <span class="hbc-attr">title</span>=<span class="hbc-st">"home"</span> <span class="hbc-attr">is_ok</span>=<span class="hbc-kw">true</span><span class="hbc-tg">&gt;</span></div>
+      <div class="hbc-line"><span class="hbc-ln">2</span>&nbsp;&nbsp;<span class="hbc-tg">&lt;p&gt;</span>child content<span class="hbc-tg">&lt;/p&gt;</span></div>
       <div class="hbc-line"><span class="hbc-ln">2</span><span class="hbc-tg">&lt;/Component&gt;</span></div>
       <div class="hbc-line"><span class="hbc-ln">1</span>&nbsp;</div>
-      <div class="hbc-line hbc-active"><span class="hbc-ln hbc-ln-cur">0</span><span class="hbc-at">@if</span> <span
-          class="hbc-cursor">s</span>elf.is_logged_in {</div>
-      <div class="hbc-line"><span class="hbc-ln">1</span>&nbsp;&nbsp;<span class="hbc-tg">&lt;p&gt;</span>Hello, <span
-          class="hbc-at">@</span>self.username!<span class="hbc-tg">&lt;/p&gt;</span></div>
+      <div class="hbc-line hbc-active"><span class="hbc-ln hbc-ln-cur">0</span><span class="hbc-at">@if</span> <span class="hbc-cursor">s</span>elf.is_logged_in {</div>
+      <div class="hbc-line"><span class="hbc-ln">1</span>&nbsp;&nbsp;<span class="hbc-tg">&lt;p&gt;</span>Hello, <span class="hbc-at">@</span>self.username!<span class="hbc-tg">&lt;/p&gt;</span></div>
       <div class="hbc-line"><span class="hbc-ln">2</span>} else {</div>
-      <div class="hbc-line"><span class="hbc-ln">3</span>&nbsp;&nbsp;<span class="hbc-tg">&lt;p&gt;</span>Please log in
-        to continue.<span class="hbc-tg">&lt;/p&gt;</span></div>
+      <div class="hbc-line"><span class="hbc-ln">3</span>&nbsp;&nbsp;<span class="hbc-tg">&lt;p&gt;</span>Please log in to continue.<span class="hbc-tg">&lt;/p&gt;</span></div>
       <div class="hbc-line"><span class="hbc-ln">4</span>}</div>
       <div class="hbc-line"><span class="hbc-ln">5</span>&nbsp;</div>
       <div class="hbc-line"><span class="hbc-ln">6</span><span class="hbc-tg">&lt;ul&gt;</span></div>
-      <div class="hbc-line"><span class="hbc-ln">7</span>&nbsp;&nbsp;<span class="hbc-at">@for</span> item in self.items
-        {</div>
-      <div class="hbc-line"><span class="hbc-ln">8</span>&nbsp;&nbsp;&nbsp;&nbsp;<span
-          class="hbc-tg">&lt;li&gt;</span><span class="hbc-at">@</span>item<span class="hbc-tg">&lt;/li&gt;</span></div>
+      <div class="hbc-line"><span class="hbc-ln">7</span>&nbsp;&nbsp;<span class="hbc-at">@for</span> item in self.items {</div>
+      <div class="hbc-line"><span class="hbc-ln">8</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hbc-tg">&lt;li&gt;</span><span class="hbc-at">@</span>item<span class="hbc-tg">&lt;/li&gt;</span></div>
       <div class="hbc-line"><span class="hbc-ln">9</span>&nbsp;&nbsp;}</div>
       <div class="hbc-line"><span class="hbc-ln">10</span><span class="hbc-tg">&lt;/ul&gt;</span></div>
       <div class="hbc-line"><span class="hbc-ln">11</span>&nbsp;</div>
       <div class="hbc-line"><span class="hbc-ln">12</span><span class="hbc-at">@{</span></div>
       <div class="hbc-line"><span class="hbc-ln">13</span>&nbsp;&nbsp;<span class="hbc-kw">let</span> x = 42;</div>
       <div class="hbc-line"><span class="hbc-ln">14</span>&nbsp;&nbsp;<span class="hbc-kw">let</span> y = x * 2;</div>
-      <div class="hbc-line"><span class="hbc-ln">15</span>&nbsp;&nbsp;println!(<span class="hbc-st">"Debug: x = {}, y =
-          {}"</span>, x, y);</div>
+      <div class="hbc-line"><span class="hbc-ln">15</span>&nbsp;&nbsp;println!(<span class="hbc-st">"Debug: x = {}, y = {}"</span>, x, y);</div>
       <div class="hbc-line"><span class="hbc-ln">16</span><span class="hbc-at">}</span></div>
     </div>
 
@@ -822,8 +533,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.js"></script>
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
   <script>
     Prism.hooks.add('before-highlightall', (env) => {
@@ -832,22 +542,22 @@
         'rshtml-block': {
           pattern: /@(?:if|for|match|raw|else|use|extends|section)\b[\s\S]*?\{[\s\S]*?\}|@(?:render_body|child_content)\b/g,
           inside: {
-            'keyword': {pattern: /^@\w+/},
-            'rust-content': {pattern: /[\s\S]+/, inside: Prism.languages.rust}
+            'keyword': { pattern: /^@\w+/ },
+            'rust-content': { pattern: /[\s\S]+/, inside: Prism.languages.rust }
           }
         },
         'rshtml-paren-expression': {
           pattern: /@\((?:[^()]|\([^()]*\))*\)/g,
           inside: {
             'punctuation': /^@\(|\)$/,
-            'rust-content': {pattern: /[\s\S]+/, inside: Prism.languages.rust}
+            'rust-content': { pattern: /[\s\S]+/, inside: Prism.languages.rust }
           }
         },
         'rshtml-simple-expression': {
           pattern: /@[a-zA-Z_][\w.]*/g,
           inside: {
             'punctuation': /^@/,
-            'rust-content': {pattern: /[\s\S]+/, inside: Prism.languages.rust}
+            'rust-content': { pattern: /[\s\S]+/, inside: Prism.languages.rust }
           }
         },
       });
@@ -900,5 +610,4 @@
   </script>
 
 </body>
-
 </html>
