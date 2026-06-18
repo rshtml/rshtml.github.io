@@ -238,10 +238,6 @@
       background: rgba(26,18,0,0.08);
     }
 
-    .hbc-active-dim {
-      background: rgba(26,18,0,0.04);
-    }
-
     .hbc-cursor-hollow {
       display: inline-block;
       outline: 1.5px solid rgba(26,18,0,0.7);
@@ -374,38 +370,6 @@
 
     .toc-toggle { display: none; }
 
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --text-color: #e2e8f0;
-        --bg-color: #1f1f1e;
-        --link-color: #f87171;
-        --border-color: #2d3748;
-        --code-bg: #2a2a29;
-        --menu-link-color: #94a3b8;
-      }
-
-      body { background-color: var(--bg-color); }
-
-      .hero::before {
-        background: linear-gradient(to bottom,
-          transparent 0%,
-          rgba(31,31,30,0.1) 35%,
-          rgba(31,31,30,0.55) 65%,
-          rgba(31,31,30,1) 100%
-        );
-      }
-
-      .container { background: var(--bg-color); box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
-      .toc-container { background: var(--bg-color); }
-      .is-active-link { background-color: #2a2a29; }
-      .toc-link:hover { background-color: #2a2a29; }
-      blockquote { background-color: #1a2035; border-left-color: #4a7fd4; }
-      .content th { background-color: #2a2a29; }
-      .content tr:nth-child(2n) { background-color: #252524; }
-      .content th, .content td { border-color: var(--border-color); }
-      .content table { border-color: var(--border-color); }
-    }
-
     @media (max-width: 768px) {
       body.toc-open { overflow: hidden; }
 
@@ -444,7 +408,7 @@
         position: fixed;
         top: 0; left: 10px;
         z-index: 1100;
-        background: #f87171;
+        background: #ff7c2a;
         color: white;
         border: none;
         padding: 10px 20px;
@@ -458,7 +422,7 @@
       .toc-container {
         position: fixed;
         top: 0; left: 0;
-        background: var(--bg-color);
+        background: white;
         width: 80%;
         max-width: 320px;
         height: 100%;
@@ -520,7 +484,7 @@
       <div class="hbc-title"><span>main.rs</span></div>
       <div class="hbc-line"><span class="hbc-ln">2</span><span class="hbc-kw">fn</span> <span class="hbc-fn">main</span>() {</div>
       <div class="hbc-line"><span class="hbc-ln">1</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hbc-kw">let</span> page = cards(&amp;get_cards());</div>
-      <div class="hbc-line hbc-active-dim"><span class="hbc-ln hbc-ln-cur">0</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hbc-kw">let <span class="hbc-cursor-hollow">m</span>ut</span> out = String::with_capacity(</div>
+      <div class="hbc-line hbc-active"><span class="hbc-ln hbc-ln-cur">0</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hbc-kw">let <span class="hbc-cursor-hollow">m</span>ut</span> out = String::with_capacity(</div>
       <div class="hbc-line"><span class="hbc-ln">1</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(page.text_size() <span class="hbc-kw">as</span> f32 * 1.1) <span class="hbc-kw">as</span> usize</div>
       <div class="hbc-line"><span class="hbc-ln">2</span>&nbsp;&nbsp;&nbsp;&nbsp;);</div>
       <div class="hbc-line"><span class="hbc-ln">3</span>&nbsp;</div>
@@ -658,17 +622,6 @@
         el.id = el.textContent.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
       }
     });
-    const prismLight = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css';
-    const prismDark = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css';
-    const prismLink = document.querySelector('link[href*="prism"][href*="themes"]');
-
-    function updatePrismTheme(isDark) {
-      prismLink.href = isDark ? prismDark : prismLight;
-    }
-
-    const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    updatePrismTheme(darkQuery.matches);
-    darkQuery.addEventListener('change', e => updatePrismTheme(e.matches));
   </script>
 
 </body>
