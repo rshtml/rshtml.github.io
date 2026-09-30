@@ -246,7 +246,14 @@ The `boxed()` function enables returning dynamically dispatched views by boxing 
 
 ### 1. Define a Struct
 
-The `View derive macro` automatically handles the implementation of the `View trait` for your structs. With this implementation, it becomes usable together with the `v!` macro. It processes the rs.html file while doing this. You can specify the path relative to `CARGO_MANIFEST_DIR` or the current directory using the `path` parameter. If the `path` parameter is not provided, it removes `Page` from the struct name, converts it to `snake_case`, adds the `.rs.html` extension, and looks in the `views` folder; for example, for a struct named `HomePage`, the inferred path will be `views/home.rs.html`. You can provide the `path` parameter like this: `#[view(path="index.rs.html")]`.
+The `View derive macro` automatically handles the implementation of the `View trait` for your structs. With this implementation, it becomes usable together with the `v!` macro. It processes the rs.html file while doing this. You can specify the path relative to `CARGO_MANIFEST_DIR` or the current directory using the `path` parameter. If the `path` parameter is not provided, it removes `Page` from the struct name, converts it to `snake_case`, adds the `.rs.html` extension, and looks in the `views` folder; for example, for a struct named `HomePage`, the inferred path will be `views/home.rs.html`. 
+
+You can provide the `path` parameter like this:
+
+
+| Usage | `<CARGO_MANIFEST_DIR>` is set  | Not set |
+| :--- | :--- | :--- |
+| `#[view(path="views/index.rs.html")]` | `<CARGO_MANIFEST_DIR>/views/index.rs.html` | `./views/index.rs.html` |
 
 **Extract file:**
 
