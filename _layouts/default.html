@@ -550,6 +550,7 @@
 			<div class="hero-bg-code">
 				<div class="hbc-title"><span>home.rs.html</span></div>
 				<div class="hbc-line"><span class="hbc-ln">7</span><span class="hbc-tg">&lt;h1&gt;</span>Welcome to RsHtml<span class="hbc-tg">&lt;/h1&gt;</span></div>
+				<div class="hbc-line"><span class="hbc-ln">7</span><span class="hbc-tg">&lt;h1&gt;</span>@(is_logged_in: bool, username: &str, items: &[Item])<span class="hbc-tg">&lt;/h1&gt;</span></div>
 				<div class="hbc-line"><span class="hbc-ln">6</span>&nbsp;</div>
 				<div class="hbc-line"><span class="hbc-ln">5</span><span class="hbc-at">@use</span>
 				<span class="hbc-st">"Component.rs.html"</span>
@@ -562,15 +563,15 @@
 				<div class="hbc-line"><span class="hbc-ln">2</span><span class="hbc-tg">&lt;/Component&gt;</span></div>
 				<div class="hbc-line"><span class="hbc-ln">1</span>&nbsp;</div>
 				<div class="hbc-line hbc-active"><span class="hbc-ln hbc-ln-cur">0</span><span class="hbc-at">@if</span>
-				<span class="hbc-cursor">s</span>elf.is_logged_in {</div>
-				<div class="hbc-line"><span class="hbc-ln">1</span>&nbsp;&nbsp;<span class="hbc-tg">&lt;p&gt;</span>Hello, <span class="hbc-at">@</span>self.username!<span class="hbc-tg">&lt;/p&gt;</span></div>
+				<span class="hbc-cursor"></span>is_logged_in {</div>
+				<div class="hbc-line"><span class="hbc-ln">1</span>&nbsp;&nbsp;<span class="hbc-tg">&lt;p&gt;</span>Hello, <span class="hbc-at">@</span>username!<span class="hbc-tg">&lt;/p&gt;</span></div>
 				<div class="hbc-line"><span class="hbc-ln">2</span>} else {</div>
 				<div class="hbc-line"><span class="hbc-ln">3</span>&nbsp;&nbsp;<span class="hbc-tg">&lt;p&gt;</span>Please log in to continue.<span class="hbc-tg">&lt;/p&gt;</span></div>
 				<div class="hbc-line"><span class="hbc-ln">4</span>}</div>
 				<div class="hbc-line"><span class="hbc-ln">5</span>&nbsp;</div>
 				<div class="hbc-line"><span class="hbc-ln">6</span><span class="hbc-tg">&lt;ul&gt;</span></div>
 				<div class="hbc-line"><span class="hbc-ln">7</span>&nbsp;&nbsp;<span class="hbc-at">@for</span>
-				item in self.items {</div>
+				item in items {</div>
 				<div class="hbc-line"><span class="hbc-ln">8</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hbc-tg">&lt;li&gt;</span><span class="hbc-at">@</span>item<span class="hbc-tg">&lt;/li&gt;</span></div>
 				<div class="hbc-line"><span class="hbc-ln">9</span>&nbsp;&nbsp;}</div>
 				<div class="hbc-line"><span class="hbc-ln">10</span><span class="hbc-tg">&lt;/ul&gt;</span></div>

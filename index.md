@@ -65,7 +65,7 @@ args = ["--stdio"]
 
 [[grammar]]
 name = "rshtml"
-source = { git = "https://github.com/rshtml/tree-sitter-rshtml", rev = "a1499c58d4692ec5bc0faed790b4e90ab0fb8996" }
+source = { git = "https://github.com/rshtml/tree-sitter-rshtml", rev = "5b87e030cb0effa914f35f2c211b9d2fb1276516" }
 ```
 
 You can download the compiled `rshtml-analyzer` code suitable for your system from the [Releases Page](https://github.com/rshtml/rshtml-analyzer/releases){:target="_blank" rel="noopener noreferrer"} or use following command:
@@ -242,6 +242,19 @@ fn do_boxed() -> Box<dyn View> {
 
 The `boxed()` function enables returning dynamically dispatched views by boxing them into a `Box<dyn View>`.
 
+### 🔗 The Write Trait
+
+Rendering can be performed on any type that implements the `rshtml::Write` trait. `String` is one such type.
+
+The `rshtml::Write` trait is built on top of `fmt::Write`, so any type implementing `fmt::Write` can also be used as a render target.
+
+If you want to render into a type that implements `io::Write`, you can use the `rshtml::IoWriter` adapter. For example, to render directly to `stdout`:
+
+```rust
+let mut io_writer = IoWriter::new(io::stdout());
+homepage.render(&mut io_writer).unwrap();
+```
+
 ## 🧱 View Derive Macro
 
 ### 1. Define a Struct
@@ -257,9 +270,11 @@ You can provide the `path` parameter like this:
 
 **Extract file:**
 
-The `extract` parameter can be used to extract the Rust sections of an `rs.html` file into the `target` directory and include them via a macro. This approach simplifies error handling and improves compiler diagnostics. By default, `extract` is set to `false`.
+The `extract` parameter controls whether the Rust sections of an `rs.html` file are extracted into the `.rshtml` directory in the root directory and included via a `mod`. This approach simplifies error handling and improves compiler diagnostics. By default, `extract` is set to `true` in debug mode and can be disabled if desired, whereas it cannot be enabled in release builds.
 
-`#[view(extract)]` or `#[view(extract = true)]`
+>Make sure to add the `.rshtml` directory to your `.gitignore` file.
+
+`#[view(extract = false)]`
 
 <u><strong>Struct Definition:</strong></u>
 
@@ -267,7 +282,7 @@ The `extract` parameter can be used to extract the Rust sections of an `rs.html`
 use rshtml::View;
 
 #[derive(View)]
-// #[view(path="views/index.rs.html", extract)]
+// #[view(path="views/home.rs.html", extract=false)]
 struct HomePage {
     username: String,
     items: Vec<String>,
@@ -283,12 +298,13 @@ Types implementing this trait must also implement `fmt::Write`. Any type that im
 
 **Accessing Data and Logic in the View**
 
-Inside your `.rs.html` template, you have full access to the
-fields and methods of your struct instance through the `self` keyword.
+Inside your `.rs.html` template, you can access the fields of your struct through template parameters.
 
 ```razor
-    <p>Welcome, @self.title</p>
-    <span>Your formatted name is: @self.get_formatted_name()</span>
+    @(info: &Info, title: &str)
+    
+    <p>Welcome, @title</p>
+    <span>Your formatted name is: @info.get_formatted_name()</span>
 ```
 
 <u><strong>Template Rendering:</strong></u>
@@ -329,8 +345,8 @@ Simple variable access, function calls,
 or field lookups can be written directly following the `@` prefix.
 
 ```razor
-<h1>Welcome, @self.username</h1>
-<p>You have @self.items.len() items.</p>
+<h1>Welcome, @username</h1>
+<p>You have @items.len() items.</p>
 ```
 
 **Parenthesized Expressions**
@@ -341,7 +357,7 @@ This ensures the entire expression is parsed and evaluated as a single unit.
 
 ```razor
 <p>Final price: @(item.cost + item.tax)</p>
-<p>@((self.value * 10).pow(2))</p>
+<p>@((value * 10).pow(2))</p>
 ```
 
 #### Control Flows & Loops
@@ -355,7 +371,7 @@ The syntax for RsHtml control flows,
 is defined as `@<directive> <rust-expression> { <inner-template> } ..`
 
 ```razor
-@if self.items.is_empty() {
+@if items.is_empty() {
     <p>You have no items.</p>
 } else {
     <p>Here are your items.</p>
@@ -363,9 +379,9 @@ is defined as `@<directive> <rust-expression> { <inner-template> } ..`
 ```
 
 ```razor
-@if self.count == 0 {
+@if count == 0 {
     <p>You have no items.</p>
-} else if self.count == 1 {
+} else if count == 1 {
     <p>You have one item.</p>
 } else {
     <p>Here are your items.</p>
@@ -384,12 +400,12 @@ which must be prefixed with `@`.
 
 ```razor
 <ul>
-    @for item in &self.items {
+    @for item in items {
         <li>@item</li>
     }
 
     <table>
-        @for (index, user) in self.users.iter().enumerate() {
+        @for (index, user) in users.iter().enumerate() {
             <tr>
                 <td>@(index + 1)</td>
                 <td>@user.name</td>
@@ -453,7 +469,7 @@ This allows you to declare variables and perform complex operations.
 ##### Raw Rendering (The @# Prefix)
 
 By default, RsHtml prioritizes security. Any output from a Rust expression
-`(@self.my_var)` is automatically HTML-escaped.
+`(@my_var)` is automatically HTML-escaped.
 This means characters like `<` and `>` are converted to `&lt;` and `&gt;`, which prevents
 Cross-Site Scripting (XSS) attacks by ensuring that string variables cannot inject malicious HTML.
 
@@ -462,9 +478,9 @@ Rust code and trust completely. To bypass the default escaping mechanism,
 you can prefix your expression with `@#`.
 
 ```razor
-<div>@self.my_var</div>
+<div>@my_var</div>
 
-<div>@#self.my_var</div>
+<div>@#my_var</div>
 ```
 *Renders as:*
 ```html
@@ -488,7 +504,7 @@ in your template, you must escape it as `@@`.
 Components are reusable, self-contained pieces of UI that encapsulate both markup and logic.
 They are the building blocks of a modern, maintainable architecture.
 
-A component is simply another .rs.html template that can accept parameters (props) and render child content.
+A component is simply another `.rs.html` template that can accept parameters (props) and render child content.
 
 #### Defining a Component
 
@@ -499,13 +515,34 @@ it and can specify where to render any **"child content"** it receives.
 
 Component parameters must be defined at the very top of the file, excluding whitespace. The parameters passed to the component should be specified here. Parameters are defined using the syntax `@(count: i32, name: &str, title)`. If a type is not specified as in the third parameter of the example, it implies that the parameter expects a type implementing `View`.
 
-Furthermore, if a component parameter is passed as a block (e.g., `<Component title = {this is block}/>`), it is treated as  `impl View`. Example usage includes `@(title: impl View)` or simply `@(title)`.
+Furthermore, if a component parameter is passed as a block (e.g., `<Component title = {this is block}/>`), it is treated as  `impl View`. Example usage is `@(title: impl View)`.
 
-When providing component parameters at the call site, the name is significant rather than the order. A parameter passed with the name `title` will be captured by the name `title`. If no additional processing is required on the parameters and they are intended solely for rendering to the screen, they can be utilized directly without explicit typing.
+When providing component parameters at the call site, the name is significant rather than the order. A parameter passed with the name `title` will be captured by the name `title`.
+
+`ONLY` for the root entry component directly bound to a `struct`, you can access both the struct's fields and the struct itself. When you declare `@(email: &String)`, the `email` field of the struct is automatically passed as a parameter. Primitive types are passed directly by value, whereas other types are passed by reference (for example, `struct HomePage { email: String }` can be captured as `@(email: &str)` or `@(email: &String)`). Additionally, you can access a reference to the struct itself by prefixing the parameter name with the `self` qualifier, such as `@(self state: &HomePage)`, which assigns `self` to `state`.
+
+```rust
+#[derive(View)]
+struct HomePage {
+    id: i32,
+    email: String,
+}
+```
+
+```razor
+<!-- home.rs.html -->
+@(self state: &HomePage, id: i32, email: &str)
+
+<div>
+    <p>ID: @id</p>
+    <p>Email: @email</p>
+    <p>From self: @&state.email</p>
+</div>
+```
 
 ***components/Card.rs.html***
 ```razor
-@(title, footer, content: String) @* Component parameters *@
+@(title: &str, footer: impl View, content: &String) @* Component parameters *@
 
 <p>
 @title
@@ -535,7 +572,7 @@ the parent template, should be rendered.
 ***components/Card.rs.html***
 
 ```razor
-@(title) @* This component expects a 'title' parameter. *@
+@(title: impl View) @* This component expects a 'title' parameter. *@
 <div class="card">
     <div class="card-header">
         @title
@@ -570,7 +607,7 @@ Before you can use a component, you must import it using the `@use` directive.
 
 #### Using Components
 
-`<Component title=@self.title is_ok=true />`
+`<Component title=@title is_ok=true />`
 
 **Important Naming Convention:** When using the tag syntax,
 the component name must begin with a capital letter `(PascalCase)`.
@@ -604,7 +641,7 @@ Data can be passed to components using attributes: `<Component attributes />`. R
 -   **String Literals:** `title="Hello World"`
 -   **Numbers:** `count=42` or `price=99.9`
 -   **Booleans:** `is_active=true`
--   **Rust Expressions:** `user=@self.current_user` or `items=@(vec![1, 2, 3])`
+-   **Rust Expressions:** `user=@current_user` or `items=@(vec![1, 2, 3])`
 -   **Template Blocks:** `header={ <h3>My Header</h3> }`
 
 This powerful feature allows you to pass not just simple values,
@@ -616,10 +653,10 @@ but also complex Rust data and even other rendered chunks of HTML as parameters.
 <Card
     title="Dynamic Card"
     is_published=true
-    view_count=@self.page_views
+    view_count=@page_views
     header={
         <div class="custom-header">
-            Rendered from a template block! @self.data
+            Rendered from a template block! @data
         </div>
     }
 />
@@ -652,7 +689,7 @@ Serializes a given Rust value into a JSON string, ready for use in JavaScript.
 
 ```razor
 <script>
-    const userData = @#json(&self.current_user);
+    const userData = @#json(&current_user);
     console.log("User ID:", userData.id);
 </script>
 ```
@@ -672,7 +709,7 @@ Converts a given Rust value into JSON and wraps it directly in a JavaScript `let
 
 ```razor
 <script>
-    @#json_let("user", &self.current_user);
+    @#json_let("user", &current_user);
     console.log("Username:", user.username);
 </script>
 ```
@@ -694,20 +731,20 @@ RsDateTime object that can be easily formatted with chainable methods.
 By default, it formats the date and time in a `YYYY-MM-DD HH:MM:SS` format.
 
 ```razor
-<p>Published on: @time(&self.post_created_at)</p>
+<p>Published on: @time(&post_created_at)</p>
 ```
 
 **The .pretty() Formatter:**
 
 For a more human-readable date format, you can chain the .pretty() method.
 ```razor
-<p>Published on: @time(&self.post_created_at).pretty()</p>
+<p>Published on: @time(&post_created_at).pretty()</p>
 ```
 *Renders a date like: Jan 01, 2025*
 
 **Formatting can be done with the `format` method:**
 ```razor
-<p>Published on: @time(&self.post_created_at).format("%A, %B %e, %Y")</p>
+<p>Published on: @time(&post_created_at).format("%A, %B %e, %Y")</p>
 ```
 *Renders something like: Wednesday, January 1, 2025*
 
