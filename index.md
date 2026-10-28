@@ -577,7 +577,7 @@ struct Home {
 
 impl View for Home {
     fn render(&self, out: &mut dyn Write) -> fmt::Result {
-        v!(<div>Home Page, title:{&self.title}, count:{self.count}</div>)(out)
+        v!(<div>"Home Page, title:" {&self.title}", count:" {self.count}</div>)(out)
     }
 }
 
@@ -744,7 +744,7 @@ For a more human-readable date format, you can chain the .pretty() method.
 ```
 *Renders something like: Wednesday, January 1, 2025*
 
-### Axum and Actix Web Integration
+## 🔌 Axum and Actix Web Integration
 
 RsHtml provides built-in support for `axum` and `actix-web` through Cargo features. When enabled, any struct deriving `View` automatically implements `IntoResponse` for Axum and `Responder` for Actix Web, allowing you to return views directly from your route handlers.
 
